@@ -1,22 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isalnum.c                                       :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/30 18:59:15 by gmorra            #+#    #+#             */
-/*   Updated: 2020/10/30 19:08:17 by gmorra           ###   ########.fr       */
+/*   Created: 2020/10/28 14:57:56 by gmorra            #+#    #+#             */
+/*   Updated: 2020/11/02 18:54:35 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../includes/libft.h"
 
-int			ft_isalnum(int c)
+size_t		ft_strlen(const char *s)
 {
-	if ((c >= 48 && c <= 57) || (c >= 65 && c <= 90)
-	|| (c >= 97 && c <= 122))
-		return (1);
-	else
-		return (0);
+	int a;
+
+	a = 0;
+	while (s[a] != 0)
+		a++;
+	return (a);
 }

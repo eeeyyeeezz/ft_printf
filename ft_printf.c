@@ -6,55 +6,157 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 17:43:11 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/01 19:36:39 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/04 18:38:18 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/libft.h"
-#include "includes/libft_printf.h"
+// #include "includes/libft.h"
+// #include "includes/libft_printf.h"
+#include <printf.h>
+#include <unistd.h>
 
-typedef struct	s_args
+typedef		struct s_arg
 {
-	int index;
-	char c_char;
-}				t_args;
+	int		count;
+	int		width;
+	int		accuracy;
+	char	dot;
+	char	flag;
 
-void			manage_fuction(const char *procent, va_list *argptr)
+}					t_arg;
+
+/*
+libft on
+*/
+
+void		ft_putchar(char c)
 {
-	// int j_jump;
+	write(1, &c, 1);
+}
+
+void		ft_putstr_fd(char *s, int fd)
+{
+	if (fd < 0 || s == NULL)
+		return ;
+	while (*s)
+		write(fd, &*s++, 1);
+}
+
+void		ft_putnbr_fd(int nb, int fd)
+{
+	int *ptr;
+
+	ptr = 0;
+	if (nb < 0 && nb != -2147483648)
+	{
+		write(fd, "-", 1);
+		nb *= -1;
+	}
+	if (nb == -2147483648)
+		ft_putstr_fd("-2147483648", fd);
+	else if (nb / 10 > 0)
+	{
+		ft_putnbr_fd(nb / 10, fd);
+		ft_putchar(nb % 10 + 48);
+	}
+	else
+		ft_putchar(nb + 48);
+}
+
+size_t		ft_strlen(const char *s)
+{
+	int a;
+
+	a = 0;
+	while (s[a] != 0)
+		a++;
+	return (a);
+}
+
+/*
+Parsers
+*/
+
+void		ft_parser(const char *arr, t_arg *j)  // делай функции на обработку всех флагов записывать в стракт результаты
+{
+	j->count = 0;
+
+	if (*arr + 1 == '%')
+	{
+		ft_putchar('%');
+		j->count++;
+		// break ;
+	}
+	else if (*arr + 1 == '-')
+	{
+		j->flag = '-';
+		j->count++;
+		// break ;
+	}
+	else if (*arr + 1 == '.')
+	{
+		j->flag = '.';
+		j->count++;
+		// break ;
+	}
+}
+
+/*
+Obrabotka
+*/
+
+int				manage_int(const char *arr, va_list *argptr)
+{
+	int		i;
+	int		num;
+
+	(void)arr;
+	i = 0;
+	num = va_arg(*argptr, int);
+	ft_putnbr_fd(num, 1);
+	return (num);
+}
+
+
+void			manage_fuction(const char *procent, va_list *argptr, t_arg *j)				// Функция обработки %d (int)
+{
 	int i;
 
-	// j_jump = 0;
-	i = 0;
-	// сделай тут обработку флагов до d, c, s, etc.
-	if (procent[i + 1] == 'd') 					// Функция обработки %d (int)
-		manage_int((char *)&procent[i], &*argptr);
-	else if (procent[i + 1] == 'c')
-		manage_char(&*argptr);
-	else if (procent[i + 1] == 's')
-		manage_str(&*argptr);
+	i = -1;
+	while (procent[++i])
+	{
+		if (procent[i] == 'd' || procent[i] == 'i')
+		{
+			manage_int((char *)&procent[i], &*argptr);
+			break ;
+		}
+	}
+	j->count = j->count + i;
 }
+
+/*
+printf
+*/
 
 int				ft_printf(const char *arr, ...)
 {
-	va_list argptr;
 	int		i;
-	// int		jump;
-	int		len;
+	va_list	argptr;
+	t_arg 	pars;
 
-	// jump = 0;
 	i = -1;
-	len = 0;
 	va_start(argptr, arr);
 	while (arr[++i])
 	{
 		if (arr[i] == '%')
 		{
-			manage_fuction((char *)&arr[i], &argptr/*, int jump*/);
-			i += 2;   // подсчет флаги не флаги и в плюс
+			ft_parser(arr, &pars);
+			i += pars.count;
+			manage_fuction((char *)&arr[i], &argptr, &pars);
+			i += pars.count;
 		}
-		write(1, &arr[i], 1);
+		else
+			ft_putchar(arr[i]);
 	}
-	va_end(argptr);
-	return (len);
+	return (0);
 }
