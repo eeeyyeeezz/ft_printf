@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 17:43:11 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/08 16:03:59 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/08 19:20:49 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,11 +106,13 @@ static int			aabs(int n)
 	return (n);
 }
 
-static int			ft_strlen_atoi(int n)
+static int			ft_strlen_atoi_fixed(int n)		// изменил на то что если int n = 0 то вернуть 0 надеюсь итоа не умрет от этого иначе другую функцию делать
 {
 	int len;
 
 	len = 0;
+	if (n == 0)
+		return (0);
 	if (n <= 0)
 		++len;
 	while (n != 0)
@@ -126,7 +128,7 @@ char				*ft_itoa(int n)
 	int		len;
 	char	*itoa;
 
-	len = ft_strlen_atoi(n);
+	len = ft_strlen_atoi_fixed(n);
 	itoa = (char *)malloc(sizeof(char) * (len + 1));
 	if (itoa == NULL)
 		return (NULL);
@@ -160,7 +162,7 @@ int		ft_istype(int c)
 		return (0);
 }
 
-#pragma endregion libf
+#pragma endregion libft
 
 /*
 Parsers
@@ -178,26 +180,24 @@ void		ft_parser(const char *arr, t_arg *j)  // обработка всех фл�
 	count_jump = 0;
 	flag = 0;
 	jump = 0;
-	// if (arr[i + 1] == '%')			// печать процента
-	// {
-	// 	while (arr[i++] == '%')
-	// 		ft_putchar('%');
-	// 	return ;
-	// }
-	while (arr[i + 1] == '0' || arr[i + 1] == '-' || arr[i] == '0' || arr[i] == '-')				// если минус среди нолей счетчик смэрть		|| сделать ft_strchr поиск минуса?
+	if (arr[1] == '0' || arr[1] == '-')			// сделать if вхождение если arr[1] == flag тогда заходить в while
 	{
-		if (arr[i] == '-' || arr[i + 1] == '-')
-			flag = 1;
-		j->flag = '0';
-		count_jump++;
-		jump++;
-		i++;
+		i += 1;
+		while (arr[i] == '0' || arr[i] == '-')				// если минус среди нолей счетчик смэрть		|| сделать ft_strchr поиск минуса?
+		{
+			if (arr[i] == '-')
+				flag = 1;
+			j->flag = '0';
+			count_jump++;
+			jump++;
+			i++;
+			// printf("fuck me! ");
+		}
 	}
 	if (flag == 1)
 		j->flag = '-';
-	while (!(ft_istype(arr[i])))			// если обрабатывать с istype среди точек то добавить && arr[i + 1] != чемутотам
+	while (!(ft_istype(arr[i])))
 		i++;
-	// printf("T_TYPE !!%c!! !!%d!! ", arr[i], i);
 	j->type = arr[i];
 	while (ft_isdigit(arr[i - 1]))
 		i--;
@@ -212,22 +212,40 @@ void		ft_parser(const char *arr, t_arg *j)  // обработка всех фл�
 		j->width = ft_atoi((char *)&arr[jump + 1]);
 	else
 		j->width = ft_atoi((char *)&arr[jump]);
-	j->count += (1 + count_jump) + ft_strlen_atoi(j->precision) + ft_strlen_atoi(j->width);		// тут добавил + 1 в начале мб неправильно
-	printf("type [%c] flag [%c] width (%d) precision [%d] || ", j->type, j->flag, j->width, j->precision);
+	j->count += (count_jump + 2) + ft_strlen_atoi_fixed(j->precision) + ft_strlen_atoi_fixed(j->width);		// тут добавил + 2 в начале мб неправильно || походу правильно хз зачем правда
+	printf("type [%c] flag [%c] width [%d] precision [%d] count [%d] || ", j->type, j->flag, j->width, j->precision, j->count);
 }
 
 /*
 Obrabotka
 */
 
-int				manage_int(const char *arr, va_list *argptr)			// Функция обработки %d (int)
+int				manage_int(const char *arr, va_list *argptr, t_arg *s_struct)			// Функция обработки %d (int)
 {
 	int		i;
 	int		num;
+	size_t	width;
 
 	(void)arr;
 	i = 0;
+	width = s_struct->width;
 	num = va_arg(*argptr, int);
+	if (num < 0 && s_struct->flag == '0')
+	{
+		write(1, "-", 1);
+		num *= -1;
+	}
+	if (s_struct->flag == '0')
+	{
+		if (width > ft_strlen(arr))
+		{
+			while (width - ft_strlen(arr) > 0)
+			{
+				write(1, "0", 1);
+				width--;
+			}
+		}
+	}
 	ft_putnbr(num);
 	return (num);
 }
@@ -242,7 +260,7 @@ void			manage_fuction(const char *procent, va_list *argptr, t_arg *j)				// фу
 	{
 		if (procent[i] == 'd' || procent[i] == 'i')
 		{
-			manage_int((char *)&procent[i], &*argptr);
+			manage_int((char *)&procent[i], &*argptr, j);
 			break ;
 		}
 	}
@@ -268,7 +286,9 @@ int				ft_printf(const char *arr, ...)
 			ft_parser((char *)&arr[i], &pars);
 			i += pars.count;
 			manage_fuction((char *)&arr[i], &argptr, &pars);
-			pars.flag = '!'; // обнуление флага
+			pars.flag = '!'; // обнуление
+			pars.width = 0;
+			pars.precision = 0;
 		}
 		else
 			ft_putchar(arr[i]);
