@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 17:43:11 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/07 17:46:38 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/08 16:03:59 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,23 +143,40 @@ char				*ft_itoa(int n)
 	}
 	return (itoa);
 }
+
+int		ft_isdigit(int c)
+{
+	if (c >= '1' && c <= '9')
+		return (1);
+	else
+		return (0);
+}
+
+int		ft_istype(int c)
+{
+	if (c >= 'a' && c <= 'z')
+		return (1);
+	else
+		return (0);
+}
+
 #pragma endregion libf
 
 /*
 Parsers
 */
 
-void		ft_parser(const char *arr, t_arg *j)  // делай функции на обработку всех флагов записывать в стракт результаты
+void		ft_parser(const char *arr, t_arg *j)  // обработка всех флагов и запись в стракт результаты
 {
-	int	precision_place;
-	int	if_precision;
+	int	count_jump;
 	int jump;
+	int	flag;
 	int i;
 
 	j->count = 0;
-	if_precision = 0;
-	precision_place = 0;				// начальное значение где аргумент
 	i = 0;
+	count_jump = 0;
+	flag = 0;
 	jump = 0;
 	// if (arr[i + 1] == '%')			// печать процента
 	// {
@@ -167,35 +184,36 @@ void		ft_parser(const char *arr, t_arg *j)  // делай функции на о
 	// 		ft_putchar('%');
 	// 	return ;
 	// }
-	while (arr[i + 1] == '0' && j->flag != '-')
+	while (arr[i + 1] == '0' || arr[i + 1] == '-' || arr[i] == '0' || arr[i] == '-')				// если минус среди нолей счетчик смэрть		|| сделать ft_strchr поиск минуса?
 	{
+		if (arr[i] == '-' || arr[i + 1] == '-')
+			flag = 1;
 		j->flag = '0';
+		count_jump++;
 		jump++;
 		i++;
-		// write(1, " !it! ", 20);
 	}
-	while (arr[i + 1] == '-' || arr[i] == '-')
-	{
+	if (flag == 1)
 		j->flag = '-';
-		jump++;
+	while (!(ft_istype(arr[i])))			// если обрабатывать с istype среди точек то добавить && arr[i + 1] != чемутотам
 		i++;
+	// printf("T_TYPE !!%c!! !!%d!! ", arr[i], i);
+	j->type = arr[i];
+	while (ft_isdigit(arr[i - 1]))
+		i--;
+	if (arr[i - 1] == '.')
+			j->precision = ft_atoi((char *)&arr[i]);
+	while (arr[i - 2] == '.')
+	{
+		count_jump++;			// tak ? ili kak?
+		i--;
 	}
-	// while (arr[precision_place] != '.')			// поиск точности
-	// {
-	// 	if (arr[precision_place] == '.')
-	// 	{
-	// 		j->precision = ft_atoi((char *)&arr[precision_place]);
-	// 		break ;
-	// 	}
-	// 	if_precision++;
-	// 	precision_place++;			// или --
-	// }
-	if (arr[1] != '0' && arr[1] != '-')
+	if (arr[1] != '0' && arr[1] != '-')				// обработка ширины
 		j->width = ft_atoi((char *)&arr[jump + 1]);
 	else
 		j->width = ft_atoi((char *)&arr[jump]);
-	j->count += i + if_precision + ft_strlen_atoi(j->width);		// обрботать если есть точность прыжок правильно с учетом
-	printf("flag [%c] width (%d) precision [%d] ", j->flag, j->width, j->precision);
+	j->count += (1 + count_jump) + ft_strlen_atoi(j->precision) + ft_strlen_atoi(j->width);		// тут добавил + 1 в начале мб неправильно
+	printf("type [%c] flag [%c] width (%d) precision [%d] || ", j->type, j->flag, j->width, j->precision);
 }
 
 /*
@@ -251,7 +269,6 @@ int				ft_printf(const char *arr, ...)
 			i += pars.count;
 			manage_fuction((char *)&arr[i], &argptr, &pars);
 			pars.flag = '!'; // обнуление флага
-			// i += pars.count;
 		}
 		else
 			ft_putchar(arr[i]);
