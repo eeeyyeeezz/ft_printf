@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 17:43:11 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/08 19:20:49 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/09 18:15:47 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,38 +220,49 @@ void		ft_parser(const char *arr, t_arg *j)  // обработка всех фл�
 Obrabotka
 */
 
-int				manage_int(const char *arr, va_list *argptr, t_arg *s_struct)			// Функция обработки %d (int)
+void			manage_int_minus(int num, int width)
 {
-	int		i;
-	int		num;
-	size_t	width;
+	ft_putnbr(num);
+	while (width - ft_strlen_atoi_fixed(num) > 0)
+	{
+		ft_putchar(' ');
+		width--;
+	}
+}
 
-	(void)arr;
-	i = 0;
-	width = s_struct->width;
-	num = va_arg(*argptr, int);
+void			manage_int_zero(int num, int width, t_arg *s_struct)
+{
 	if (num < 0 && s_struct->flag == '0')
 	{
-		write(1, "-", 1);
+		ft_putchar('-');
 		num *= -1;
 	}
-	if (s_struct->flag == '0')
+	while (width - ft_strlen_atoi_fixed(num) > 0)
 	{
-		if (width > ft_strlen(arr))
-		{
-			while (width - ft_strlen(arr) > 0)
-			{
-				write(1, "0", 1);
-				width--;
-			}
-		}
+		ft_putchar('0');
+		width--;
 	}
 	ft_putnbr(num);
+}
+
+int				manage_int(va_list *argptr, t_arg *s_struct)
+{
+	int		num;
+	int		width;
+
+	width = s_struct->width;
+	num = va_arg(*argptr, int);
+	if (s_struct->flag == '-')
+		manage_int_minus(num, width);
+	else if (s_struct->flag == '0')
+		manage_int_zero(num, width, s_struct);
+	else if (s_struct->flag == '!')
+		ft_putnbr(num);
 	return (num);
 }
 
 
-void			manage_fuction(const char *procent, va_list *argptr, t_arg *j)				// функция обработки типа аргумента
+void			manage_fuction(const char *procent, va_list *argptr, t_arg *j)
 {
 	int i;
 
@@ -260,11 +271,11 @@ void			manage_fuction(const char *procent, va_list *argptr, t_arg *j)				// фу
 	{
 		if (procent[i] == 'd' || procent[i] == 'i')
 		{
-			manage_int((char *)&procent[i], &*argptr, j);
+			manage_int(argptr, j);
 			break ;
 		}
 	}
-	j->count = j->count + i;
+	j->count = j->count + i;		// zachem?
 }
 
 /*

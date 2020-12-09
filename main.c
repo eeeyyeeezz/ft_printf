@@ -6,12 +6,13 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 19:36:20 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/08 19:21:01 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/09 18:14:32 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/libft.h"
 #include "includes/libft_printf.h"
+char				*ft_itoa(int n);
 
 int				main(void)
 {
@@ -19,10 +20,14 @@ int				main(void)
 	printf("-----\n\n");
 
 	#pragma region INT_ORIGINAL_PRINTF
-	printf("10d  12345    [%10d]\n", 12345);
-	printf("010d 12345    [%010d]\n", 12345);
+	printf("-d    12345   [%-d]\n", 12345);
+	printf("10d   12345   [%10d]\n", 12345);
+	printf("10d  -12345   [%10d]\n", -12345);
+	printf("-10d  12345   [%-10d]\n", 12345);
+	printf("-10d -12345   [%-10d]\n", -12345);
+	printf("010d  12345   [%010d]\n", 12345);
 	printf("010d -12345   [%010d]\n", -12345);
-	printf(".10d 67895123 [%.10d]\n", 12345);
+	// printf(".10d -12345   [%.10d]\n", -12345);
 	printf("15.10d 12345: [%15.10d]\n", 12345);
 	// printf("15......10d 12345: [%15......10d]\n", 12345);	// warning		flags: ERROR!
 	printf("    015.10d 12345: [%015.10d]\n", 12345);
@@ -37,7 +42,10 @@ int				main(void)
 	printf("\nMEIN FT_PRINTF\n");
 	printf("-----\n\n");
 	// ft_printf("dva [%%]: %%\n");
-	ft_printf("Int 50 :[%010...22d]\n", -50);
-	ft_printf("Int 200 :[%010...22d] 1234567890 \n", 200);
+	ft_printf("Int -50 :[%0000-0010...22d]\n", -50);
+	ft_printf("Int 200 :[%10...22d] 1234567890 \n", 200);
 	printf("\n-----\n");
+
+
+	// printf("check itoa %s\n", ft_itoa(0));
 }
