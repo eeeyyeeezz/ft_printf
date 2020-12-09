@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 17:43:11 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/09 18:15:47 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/09 19:07:58 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,6 +245,27 @@ void			manage_int_zero(int num, int width, t_arg *s_struct)
 	ft_putnbr(num);
 }
 
+void			manage_int_width(int num, int width, t_arg *s_struct)
+{
+	while (width - ft_strlen_atoi_fixed(num))
+	{
+		ft_putchar(' ');
+		width--;
+	}
+	s_struct->flag = '!';
+}
+
+void			manage_int_width_minus(int num, int width, t_arg *s_struct)
+{
+	ft_putnbr(num);
+	while (width - ft_strlen_atoi_fixed(num))
+	{
+		ft_putchar(' ');
+		width--;
+	}
+	s_struct->flag = 'Z';
+}
+
 int				manage_int(va_list *argptr, t_arg *s_struct)
 {
 	int		num;
@@ -252,11 +273,15 @@ int				manage_int(va_list *argptr, t_arg *s_struct)
 
 	width = s_struct->width;
 	num = va_arg(*argptr, int);
+	if (width > ft_strlen_atoi_fixed(num) && s_struct->flag == '-')
+		manage_int_width_minus(num, width, s_struct);
+	else if (width > ft_strlen_atoi_fixed(num))
+		manage_int_width(num, width, s_struct);
 	if (s_struct->flag == '-')
 		manage_int_minus(num, width);
 	else if (s_struct->flag == '0')
 		manage_int_zero(num, width, s_struct);
-	else if (s_struct->flag == '!')
+	if (s_struct->flag == '!')
 		ft_putnbr(num);
 	return (num);
 }
@@ -294,12 +319,12 @@ int				ft_printf(const char *arr, ...)
 	{
 		if (arr[i] == '%')
 		{
+			pars.flag = '!';
+			pars.width = 0;
+			pars.precision = 0;
 			ft_parser((char *)&arr[i], &pars);
 			i += pars.count;
 			manage_fuction((char *)&arr[i], &argptr, &pars);
-			pars.flag = '!'; // обнуление
-			pars.width = 0;
-			pars.precision = 0;
 		}
 		else
 			ft_putchar(arr[i]);
