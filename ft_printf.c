@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 17:43:11 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/09 19:07:58 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/11 16:39:01 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 
 typedef		struct s_arg
 {
+	int		len;
 	int		count;
 	int		width;
 	int		precision;
@@ -106,13 +107,11 @@ static int			aabs(int n)
 	return (n);
 }
 
-static int			ft_strlen_atoi_fixed(int n)		// изменил на то что если int n = 0 то вернуть 0 надеюсь итоа не умрет от этого иначе другую функцию делать
+static int			ft_strlen_atoi(int n)
 {
 	int len;
 
 	len = 0;
-	if (n == 0)
-		return (0);
 	if (n <= 0)
 		++len;
 	while (n != 0)
@@ -128,7 +127,7 @@ char				*ft_itoa(int n)
 	int		len;
 	char	*itoa;
 
-	len = ft_strlen_atoi_fixed(n);
+	len = ft_strlen_atoi(n);
 	itoa = (char *)malloc(sizeof(char) * (len + 1));
 	if (itoa == NULL)
 		return (NULL);
@@ -148,7 +147,7 @@ char				*ft_itoa(int n)
 
 int		ft_isdigit(int c)
 {
-	if (c >= '1' && c <= '9')
+	if (c >= '0' && c <= '9')
 		return (1);
 	else
 		return (0);
@@ -168,51 +167,45 @@ int		ft_istype(int c)
 Parsers
 */
 
-void		ft_parser(const char *arr, t_arg *j)  // обработка всех флагов и запись в стракт результаты
+void		ft_parser(const char *arr, t_arg *j)
 {
-	int	count_jump;
 	int jump;
 	int	flag;
 	int i;
 
 	j->count = 0;
 	i = 0;
-	count_jump = 0;
 	flag = 0;
 	jump = 0;
-	if (arr[1] == '0' || arr[1] == '-')			// сделать if вхождение если arr[1] == flag тогда заходить в while
+	if (arr[1] == '0' || arr[1] == '-')
 	{
 		i += 1;
-		while (arr[i] == '0' || arr[i] == '-')				// если минус среди нолей счетчик смэрть		|| сделать ft_strchr поиск минуса?
+		while (arr[i] == '0' || arr[i] == '-')
 		{
 			if (arr[i] == '-')
 				flag = 1;
 			j->flag = '0';
-			count_jump++;
 			jump++;
 			i++;
-			// printf("fuck me! ");
 		}
 	}
 	if (flag == 1)
 		j->flag = '-';
 	while (!(ft_istype(arr[i])))
 		i++;
+	while (!(ft_istype(arr[j->count])))
+		j->count++;
 	j->type = arr[i];
 	while (ft_isdigit(arr[i - 1]))
 		i--;
 	if (arr[i - 1] == '.')
 			j->precision = ft_atoi((char *)&arr[i]);
 	while (arr[i - 2] == '.')
-	{
-		count_jump++;			// tak ? ili kak?
 		i--;
-	}
-	if (arr[1] != '0' && arr[1] != '-')				// обработка ширины
+	if (arr[1] != '0' && arr[1] != '-')
 		j->width = ft_atoi((char *)&arr[jump + 1]);
 	else
 		j->width = ft_atoi((char *)&arr[jump]);
-	j->count += (count_jump + 2) + ft_strlen_atoi_fixed(j->precision) + ft_strlen_atoi_fixed(j->width);		// тут добавил + 2 в начале мб неправильно || походу правильно хз зачем правда
 	printf("type [%c] flag [%c] width [%d] precision [%d] count [%d] || ", j->type, j->flag, j->width, j->precision, j->count);
 }
 
@@ -223,7 +216,7 @@ Obrabotka
 void			manage_int_minus(int num, int width)
 {
 	ft_putnbr(num);
-	while (width - ft_strlen_atoi_fixed(num) > 0)
+	while (width - ft_strlen_atoi(num) > 0)
 	{
 		ft_putchar(' ');
 		width--;
@@ -237,7 +230,7 @@ void			manage_int_zero(int num, int width, t_arg *s_struct)
 		ft_putchar('-');
 		num *= -1;
 	}
-	while (width - ft_strlen_atoi_fixed(num) > 0)
+	while (width - ft_strlen_atoi(num) > 0)
 	{
 		ft_putchar('0');
 		width--;
@@ -247,7 +240,7 @@ void			manage_int_zero(int num, int width, t_arg *s_struct)
 
 void			manage_int_width(int num, int width, t_arg *s_struct)
 {
-	while (width - ft_strlen_atoi_fixed(num))
+	while (width - ft_strlen_atoi(num))
 	{
 		ft_putchar(' ');
 		width--;
@@ -255,10 +248,26 @@ void			manage_int_width(int num, int width, t_arg *s_struct)
 	s_struct->flag = '!';
 }
 
+void		manage_int_precesion(int num, int precision, t_arg *s_struct)
+{
+	if (num < 0)
+	{
+		ft_putchar('-');
+		num *= -1;
+	}
+	while (precision - ft_strlen_atoi(num) > 0)
+	{
+		ft_putchar('0');
+		precision--;
+	}
+	ft_putnbr(num);
+	s_struct->flag = 'Z';
+}
+
 void			manage_int_width_minus(int num, int width, t_arg *s_struct)
 {
 	ft_putnbr(num);
-	while (width - ft_strlen_atoi_fixed(num))
+	while (width - ft_strlen_atoi(num))
 	{
 		ft_putchar(' ');
 		width--;
@@ -266,28 +275,54 @@ void			manage_int_width_minus(int num, int width, t_arg *s_struct)
 	s_struct->flag = 'Z';
 }
 
-int				manage_int(va_list *argptr, t_arg *s_struct)
+void			manage_int_width_plus_precision(int num, int width, int precision, t_arg *s_struct)
+{
+	while (width > precision)
+	{
+		ft_putchar(' ');
+		width--;
+	}
+	if (num < 0)
+	{
+		ft_putchar('-');
+		num *= -1;
+	}
+	while (precision > ft_strlen_atoi(num))
+	{
+		ft_putchar('0');
+		precision--;
+	}
+	ft_putnbr(num);
+	s_struct->flag = 'Z';
+}
+
+void 				manage_int(va_list *argptr, t_arg *s_struct)
 {
 	int		num;
 	int		width;
+	int		precision;
 
+	precision = s_struct->precision;
 	width = s_struct->width;
 	num = va_arg(*argptr, int);
-	if (width > ft_strlen_atoi_fixed(num) && s_struct->flag == '-')
+	if (width > ft_strlen_atoi(num) && s_struct->flag == '-')
 		manage_int_width_minus(num, width, s_struct);
-	else if (width > ft_strlen_atoi_fixed(num))
+	else if (width > ft_strlen_atoi(num) && s_struct->flag == '0')
+		manage_int_zero(num, width, s_struct);
+	else if (width > ft_strlen_atoi(num) && width - precision < 0)
 		manage_int_width(num, width, s_struct);
+	if (precision > ft_strlen_atoi(num) && width - precision < 0)
+		manage_int_precesion(num, precision, s_struct);
+	else if (width > precision)
+		manage_int_width_plus_precision(num, width, precision, s_struct);
 	if (s_struct->flag == '-')
 		manage_int_minus(num, width);
-	else if (s_struct->flag == '0')
-		manage_int_zero(num, width, s_struct);
 	if (s_struct->flag == '!')
 		ft_putnbr(num);
-	return (num);
 }
 
 
-void			manage_fuction(const char *procent, va_list *argptr, t_arg *j)
+void			manage_fuction(const char *procent, va_list *argptr, t_arg *s_struct)
 {
 	int i;
 
@@ -296,11 +331,10 @@ void			manage_fuction(const char *procent, va_list *argptr, t_arg *j)
 	{
 		if (procent[i] == 'd' || procent[i] == 'i')
 		{
-			manage_int(argptr, j);
+			manage_int(argptr, s_struct);
 			break ;
 		}
 	}
-	j->count = j->count + i;		// zachem?
 }
 
 /*
@@ -327,7 +361,11 @@ int				ft_printf(const char *arr, ...)
 			manage_fuction((char *)&arr[i], &argptr, &pars);
 		}
 		else
+		{
+			pars.len++;
 			ft_putchar(arr[i]);
+		}
 	}
-	return (0);
+	va_end(argptr);
+	return (pars.len);
 }
