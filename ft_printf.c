@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 17:43:11 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/12 15:51:16 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/12 17:13:08 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,66 +163,81 @@ int		ft_istype(int c)
 
 #pragma endregion libft
 
-/*
-Parsers
-*/
-
-void		ft_parser_width(const char *arr, int jump, t_arg *s_struct)
+#pragma region PARSER
+void		ft_parser_width(const char *arr, t_arg *s_struct)
 {
+	int jump;
+
+	jump = 1;
+	while (arr[jump] == '0' || arr[jump] == '-')
+		jump++;
 	if (arr[1] != '0' && arr[1] != '-')
 		s_struct->width = ft_atoi((char *)&arr[jump + 1]);
 	else
 		s_struct->width = ft_atoi((char *)&arr[jump]);
 }
 
-void		ft_parser_flags(const char *arr, int *i, int *jump, int *flag, t_arg *s_struct)
+void		ft_parser_flags(const char *arr, t_arg *s_struct)
 {
+	int flag;
 	int a;
 
-	a = *(i + 1);
-	while (arr[a] == '0' || arr[a] == '-')
+	flag = 0;
+	a = 1;
+	if (arr[1] == '0' || arr[1] == '-')
 	{
-		if (arr[a] == '-')
-			*flag = 1;
-		s_struct->flag = '0';
-		jump++;
-		a++;
+		while (arr[a] == '0' || arr[a] == '-')
+		{
+			if (arr[a] == '-')
+				flag = 1;
+			s_struct->flag = '0';
+			a++;
+		}
 	}
-	i = &a;
+	if (flag == 1)
+		s_struct->flag = '-';
+}
+
+void		ft_parser_count(const char *arr, t_arg *s_struct)
+{
+	while (!(ft_istype(arr[s_struct->count])))
+		s_struct->count++;
+}
+
+void		ft_parser_type(const char *arr, t_arg *s_struct)
+{
+	int i;
+
+	i = 0;
+	while (!(ft_istype(arr[i])))
+		i++;
+	s_struct->type = arr[i];
+}
+
+void		ft_parser_precision(const char *arr, t_arg *s_struct)
+{
+	int i;
+
+	i = 0;
+	while (!(ft_istype(arr[i])))
+		i++;
+	while (ft_isdigit(arr[i - 1]))
+		i--;
+	if (arr[i - 1] == '.')
+		s_struct->precision = ft_atoi((char *)&arr[i]);
 }
 
 void		ft_parser(const char *arr, t_arg *s_struct)
 {
-	int jump;
-	int	flag;
-	int i;
-
-	s_struct->count = 0;
-	i = 0;
-	flag = 0;
-	jump = 0;
-	if (arr[1] == '0' || arr[1] == '-')
-		ft_parser_flags(arr, &i, &jump, &flag, s_struct);
-	if (flag == 1)
-		s_struct->flag = '-';
-	while (!(ft_istype(arr[i])))
-		i++;
-	while (!(ft_istype(arr[s_struct->count])))
-		s_struct->count++;
-	s_struct->type = arr[i];
-	while (ft_isdigit(arr[i - 1]))
-		i--;
-	if (arr[i - 1] == '.')
-			s_struct->precision = ft_atoi((char *)&arr[i]);
-	while (arr[i - 2] == '.')
-		i--;
-	ft_parser_width(arr, jump, s_struct);
+	ft_parser_flags(arr, s_struct);
+	ft_parser_width(arr, s_struct);
+	ft_parser_precision(arr, s_struct);
+	ft_parser_type(arr, s_struct);
+	ft_parser_count(arr, s_struct);
 	printf("type [%c] flag [%c] width [%d] precision [%d] count [%d] || ", s_struct->type, s_struct->flag, s_struct->width, s_struct->precision, s_struct->count);
 }
+#pragma endregion PARSER
 
-/*
-Obrabotka
-*/
 #pragma region INT_MANAGE
 void			manage_int_minus(int num, int width)
 {
@@ -365,6 +380,7 @@ int				ft_printf(const char *arr, ...)
 	{
 		if (arr[i] == '%')
 		{
+			pars.count = 0;
 			pars.flag = '!';
 			pars.width = 0;
 			pars.precision = 0;
