@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 17:43:11 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/13 19:37:53 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/13 20:11:37 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -360,6 +360,11 @@ void			manage_int_width(int num, int width, t_arg *s_struct)
 		ft_putnbr(num);
 		s_struct->flag = 'Z';
 	}
+	else if ((width == ft_strlen_atoi(num) || width < ft_strlen_atoi(num)) && s_struct->flag != 'Z')
+	{
+		ft_putnbr(num);
+		s_struct->flag = 'Z';
+	}
 }
 
 void		manage_int_precesion(int num, int precision, t_arg *s_struct)
@@ -383,15 +388,10 @@ void		manage_int_precesion(int num, int precision, t_arg *s_struct)
 		ft_putnbr(num);
 		s_struct->flag = 'Z';
 	}
-}
-
-void			manage_int_minus(int num, int width)
-{
-	ft_putnbr(num);
-	while (width - ft_strlen_atoi(num) > 0)
+	else if ((precision == ft_strlen_atoi(num) || precision < ft_strlen_atoi(num)) && s_struct->flag != 'Z')
 	{
-		ft_putchar(' ');
-		width--;
+		ft_putnbr(num);
+		s_struct->flag = 'Z';
 	}
 }
 
@@ -411,13 +411,23 @@ void 				manage_int(va_list *argptr, t_arg *s_struct)
 	manage_int_zero(num, width, s_struct);
 	manage_int_width(num, width, s_struct);
 	manage_int_precesion(num, precision, s_struct);
-	// if (s_struct->flag == '-')			// delete?
-	// 	manage_int_minus(num, width);
-	// if (s_struct->flag == '!')
-	// 	ft_putnbr(num);
 }
 #pragma endregion INT_MANAGE
 
+#pragma region STR_MANAGE
+void 				manage_string(va_list *argptr, t_arg *s_struct)
+{
+	char	*str;
+	int		width;
+	int		precision;
+
+	precision = s_struct->precision;
+	width = s_struct->width;
+	str = va_arg(*argptr, char*);
+	ft_putstr(str);
+}
+
+#pragma endregion STR_MANAGE
 
 void			manage_fuction(const char *procent, va_list *argptr, t_arg *s_struct)
 {
@@ -427,13 +437,15 @@ void			manage_fuction(const char *procent, va_list *argptr, t_arg *s_struct)
 	(void)procent;
 	if (s_struct->type == 'd' || s_struct->type == 'i')
 		manage_int(argptr, s_struct);
+	if (s_struct->type == 's')
+		manage_string(argptr, s_struct);
 }
 
 int				ft_printf(const char *arr, ...)
 {
 	int		i;
 	va_list	argptr;
-	t_arg 	pars;
+	t_arg 	s_struct;
 
 	i = -1;
 	va_start(argptr, arr);
@@ -441,16 +453,16 @@ int				ft_printf(const char *arr, ...)
 	{
 		if (arr[i] == '%')
 		{
-			ft_parser((char *)&arr[i], &pars, &argptr);
-			i += pars.count;
-			manage_fuction((char *)&arr[i], &argptr, &pars);
+			ft_parser((char *)&arr[i], &s_struct, &argptr);
+			i += s_struct.count;
+			manage_fuction((char *)&arr[i], &argptr, &s_struct);
 		}
 		else
 		{
-			pars.len++;
+			s_struct.len++;
 			ft_putchar(arr[i]);
 		}
 	}
 	va_end(argptr);
-	return (pars.len);
+	return (s_struct.len);
 }

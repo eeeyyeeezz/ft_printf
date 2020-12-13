@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 19:36:20 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/13 19:40:48 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/13 20:10:26 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,12 @@ int				main(void)
 	printf("\nMEIN FT_PRINTF\n");
 	printf("-----\n\n");
 	// ft_printf("dva [%%]: %%\n");
-	ft_printf("Int -12345       :[%5.5d] ddd\n", 0);
-	printf("O_R Int -12345   :[%5.5d] ddd\n", 0);
-	ft_printf("Int  12345 :[%-10.5d] 1234567890 \n", -12345);
-	printf("Int  12345 :[%-10.5d] 1234567890 \n", -12345);
+	// ft_printf("Int  12345 :[%.2d] 1234567890 \n", -12345);
+	// printf("Int  12345 :[%.2d] 1234567890 \n", -12345);
+
+	printf("asdsad [%5.s] boo\n", "Hello World");
+	ft_printf("asdsad [%s] boo\n", "Hello World");
+
 	printf("\n-----\n");
 
 /*
