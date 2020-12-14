@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 17:43:11 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/13 20:11:37 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/14 18:31:30 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,7 @@ typedef		struct s_arg
 	int		count;
 	int		width;
 	int		precision;
-	char	dot;
 	char	flag;
-	char	star;
 	char	type;
 }					t_arg;
 
@@ -63,7 +61,7 @@ void		ft_putnbr(int nb)
 		ft_putchar(nb + 48);
 }
 
-size_t		ft_strlen(const char *s)
+int			ft_strlen(const char *s)
 {
 	int a;
 
@@ -75,7 +73,7 @@ size_t		ft_strlen(const char *s)
 	return (a);
 }
 
-int		ft_atoi(const char *str)		// атой без обработки отрицательных значений
+int			ft_atoi(const char *str)		// атой без обработки отрицательных значений
 {
 	int i;
 	int res;
@@ -415,6 +413,125 @@ void 				manage_int(va_list *argptr, t_arg *s_struct)
 #pragma endregion INT_MANAGE
 
 #pragma region STR_MANAGE
+
+void			manage_str_width_plus_precision_flags(char *str, int width, int precision, t_arg *s_struct)
+{
+	int i;
+	int count;
+
+	i = 0;
+	count = 0;
+	if (width > 0 && precision > 0 && s_struct->flag == '-')
+	{
+		while (precision > 0 && ft_strlen(str) > precision)
+		{
+			ft_putchar(str[i]);
+			i++;
+			count++;
+			precision--;
+		}
+		if (precision >= ft_strlen(str))
+		{
+			ft_putstr(str);
+			count = ft_strlen(str);
+		}
+		while (width - count > 0)
+		{
+			ft_putchar(' ');
+			width--;
+		}
+		s_struct->flag = 'Z';
+	}
+}
+
+void			manage_str_width_plus_precision(char *str, int width, int precision, t_arg *s_struct)
+{
+	int i;
+
+	i = 0;
+	if (width > 0 && precision > 0 && s_struct->flag == '!')
+	{
+		if (precision < ft_strlen(str))
+			width += ft_strlen(str) - precision;
+		while (width - ft_strlen(str) > 0)
+		{
+			ft_putchar(' ');
+			width--;
+		}
+		while (precision > 0 && ft_strlen(str) > precision)
+		{
+			ft_putchar(str[i]);
+			i++;
+			precision--;
+		}
+		if (precision >= ft_strlen(str))
+			ft_putstr(str);
+		s_struct->flag = 'Z';
+	}
+}
+
+
+void			manage_str_width_minus(char *str, int width, int precision, t_arg *s_struct)
+{
+	if (width > ft_strlen(str) && width > precision && s_struct->flag == '-')
+	{
+		ft_putstr(str);
+		while (width - ft_strlen(str))
+		{
+			ft_putchar(' ');
+			width--;
+		}
+		s_struct->flag = 'Z';
+	}
+}
+
+void				manage_str_width(char *str, int width, t_arg *s_struct)
+{
+	int precision;
+
+	precision = s_struct->precision;
+	if (width > ft_strlen(str) && width > precision && s_struct->flag != 'Z')
+	{
+		while (width - ft_strlen(str))
+		{
+			ft_putchar(' ');
+			width--;
+		}
+		ft_putstr(str);
+		s_struct->flag = 'Z';
+	}
+	else if ((width == ft_strlen(str) || width < ft_strlen(str)) && s_struct->flag != 'Z')
+	{
+		ft_putstr(str);
+		s_struct->flag = 'Z';
+	}
+}
+
+void		manage_str_precesion(char *str, int precision, t_arg *s_struct)
+{
+	int i;
+	int width;
+
+	i = 0;
+	width = s_struct->width;
+	if ((precision < ft_strlen(str) && width < precision && s_struct->flag == '!') ||
+	(width == precision && s_struct->flag == '!') || (s_struct->flag == '-' && width == 0))
+	{
+		while (precision > 0)
+		{
+			ft_putchar(str[i]);
+			i++;
+			precision--;
+		}
+		s_struct->flag = 'Z';
+	}
+	else if ((precision == ft_strlen(str) || precision < ft_strlen(str)) && s_struct->flag != 'Z')
+	{
+		ft_putstr(str);
+		s_struct->flag = 'Z';
+	}
+}
+
 void 				manage_string(va_list *argptr, t_arg *s_struct)
 {
 	char	*str;
@@ -424,10 +541,28 @@ void 				manage_string(va_list *argptr, t_arg *s_struct)
 	precision = s_struct->precision;
 	width = s_struct->width;
 	str = va_arg(*argptr, char*);
-	ft_putstr(str);
+	manage_str_width_plus_precision_flags(str, width, precision, s_struct);
+	manage_str_width_plus_precision(str, width, precision, s_struct);
+	manage_str_width(str, width, s_struct);
+	manage_str_precesion(str, precision, s_struct);
+	manage_str_width_minus(str, width, precision, s_struct);
 }
 
 #pragma endregion STR_MANAGE
+
+#pragma region PTR_MANAGE
+void 				manage_pointers(va_list *argptr, t_arg *s_struct)
+{
+	char	*ptr;
+	int		width;
+	int		precision;
+
+	precision = s_struct->precision;
+	width = s_struct->width;
+	ptr = va_arg(*argptr, char*);
+}
+
+#pragma endregion PTR_MANAGE
 
 void			manage_fuction(const char *procent, va_list *argptr, t_arg *s_struct)
 {
@@ -439,6 +574,8 @@ void			manage_fuction(const char *procent, va_list *argptr, t_arg *s_struct)
 		manage_int(argptr, s_struct);
 	if (s_struct->type == 's')
 		manage_string(argptr, s_struct);
+	if (s_struct->type == 'p')
+		manage_pointers(argptr, s_struct);
 }
 
 int				ft_printf(const char *arr, ...)

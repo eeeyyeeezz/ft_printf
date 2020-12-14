@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 19:36:20 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/13 20:10:26 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/14 18:28:23 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,8 @@ int				main(void)
 	// ft_printf("dva [%%]: %%\n");
 	// ft_printf("Int  12345 :[%.2d] 1234567890 \n", -12345);
 	// printf("Int  12345 :[%.2d] 1234567890 \n", -12345);
-
-	printf("asdsad [%5.s] boo\n", "Hello World");
-	ft_printf("asdsad [%s] boo\n", "Hello World");
+	printf("asdsad [%10.3s] boo\n", "Hello");
+	ft_printf("asdsad [%10.3s] boo\n", "Hello");
 
 	printf("\n-----\n");
 
@@ -70,7 +69,7 @@ int				main(void)
 todo list:
 1) Разбить парсер || done
 2) Static функции (при разбивке)
-3) Обработка звездочки
+3) Обработка звездочки || done
 4) Два процента на ввод
 
 Что сделанно наполовину или почти правильно:
