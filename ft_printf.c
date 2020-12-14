@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 17:43:11 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/14 18:31:30 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/14 18:57:25 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -413,7 +413,6 @@ void 				manage_int(va_list *argptr, t_arg *s_struct)
 #pragma endregion INT_MANAGE
 
 #pragma region STR_MANAGE
-
 void			manage_str_width_plus_precision_flags(char *str, int width, int precision, t_arg *s_struct)
 {
 	int i;
@@ -550,16 +549,30 @@ void 				manage_string(va_list *argptr, t_arg *s_struct)
 
 #pragma endregion STR_MANAGE
 
-#pragma region PTR_MANAGE
-void 				manage_pointers(va_list *argptr, t_arg *s_struct)
+#pragma region HEX_MANAGE
+void		manage_hex(va_list *argptr, t_arg *s_struct)
 {
-	char	*ptr;
+	long	hex;
 	int		width;
 	int		precision;
 
 	precision = s_struct->precision;
 	width = s_struct->width;
-	ptr = va_arg(*argptr, char*);
+	hex = va_arg(*argptr, unsigned int);
+}
+
+#pragma endregion HEX_MANAGE
+
+#pragma region PTR_MANAGE
+void 				manage_pointers(va_list *argptr, t_arg *s_struct)
+{
+	unsigned long	ptr;
+	int				width;
+	int				precision;
+
+	precision = s_struct->precision;
+	width = s_struct->width;
+	ptr = (unsigned long)va_arg(*argptr, void*);
 }
 
 #pragma endregion PTR_MANAGE
@@ -574,6 +587,8 @@ void			manage_fuction(const char *procent, va_list *argptr, t_arg *s_struct)
 		manage_int(argptr, s_struct);
 	if (s_struct->type == 's')
 		manage_string(argptr, s_struct);
+	if (s_struct->type == 'x')
+		manage_hex(argptr, s_struct);
 	if (s_struct->type == 'p')
 		manage_pointers(argptr, s_struct);
 }
