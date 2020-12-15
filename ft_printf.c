@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 17:43:11 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/14 18:57:25 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/15 19:51:15 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,13 @@ typedef		struct s_arg
 void		ft_putchar(char c)
 {
 	write(1, &c, 1);
+}
+
+int		ft_toupper(int c)
+{
+	if (c >= 97 && c <= 122)
+		c -= 32;
+	return (c);
 }
 
 void		ft_putstr(char *s)
@@ -550,6 +557,207 @@ void 				manage_string(va_list *argptr, t_arg *s_struct)
 #pragma endregion STR_MANAGE
 
 #pragma region HEX_MANAGE
+char		hex_word(long num)
+{
+	if (num >= 0 && num <= 9)
+		return (num + 48);
+	else if (num == 10)
+		return ('a');
+	else if (num == 11)
+		return ('b');
+	else if (num == 12)
+		return ('c');
+	else if (num == 13)
+		return ('d');
+	else if (num == 14)
+		return ('e');
+	else if (num == 15)
+		return ('f');
+	return (num);
+}
+
+int			malloc_count(long num)
+{
+	int count;
+
+	count = 1;
+	while(num >= 16)
+	{
+		count++;
+		num = num / 16;
+	}
+	return (count);
+}
+
+void		ft_puthex(long num)
+{
+	int i;
+	int a;
+	char tmp;
+	char *str;
+
+	i = 0;
+	a = 0;
+	tmp = 0;
+	str = malloc(malloc_count(num));
+	while (num > 0)
+	{
+		str[i] = hex_word((num % 16));
+		num = num / 16;
+		i++;
+	}
+	i -= 1;
+	while (i >= 0)
+		write(1, &str[i--], 1);
+	free(str);
+	str = NULL;
+}
+
+void			manage_hex_width_plus_precision_flags(long num, int width, int precision, int o_precesion, t_arg *s_struct)
+{
+	if (num < 0)
+		width -= 1;
+	if (width > 0 && precision > 0 && s_struct->flag != '!')
+	{
+		while (width > precision && s_struct->flag != '-')
+		{
+			ft_putchar(' ');
+			width--;
+		}
+		if (num < 0)
+		{
+			ft_putchar('-');
+			num *= -1;
+		}
+		while (precision > malloc_count(num))
+		{
+			ft_putchar('0');
+			precision--;
+		}
+		ft_puthex(num);
+		while (width - o_precesion > 0 && s_struct->flag == '-')
+		{
+			ft_putchar(' ');
+			width--;
+		}
+		s_struct->flag = 'Z';
+	}
+}
+
+void			manage_hex_width_plus_precision(long num, int width, int precision, t_arg *s_struct)
+{
+	if (num < 0)
+		width -= 1;
+	if (width > 0 && precision > 0 && s_struct->flag == '!')
+	{
+		while (width > precision)
+		{
+			ft_putchar(' ');
+			width--;
+		}
+		if (num < 0)
+		{
+			ft_putchar('-');
+			num *= -1;
+		}
+		while (precision > malloc_count(num))
+		{
+			ft_putchar('0');
+			precision--;
+		}
+		ft_puthex(num);
+		s_struct->flag = 'Z';
+	}
+}
+
+void			manage_hex_width_minus(long num, int width, int precision, t_arg *s_struct)
+{
+	if (width > ft_strlen_atoi(num) && width > precision && s_struct->flag == '-')
+	{
+		ft_puthex(num);
+		while (width - ft_strlen_atoi(num))
+		{
+			ft_putchar(' ');
+			width--;
+		}
+		s_struct->flag = 'Z';
+	}
+}
+
+void			manage_hex_zero(long num, int width, t_arg *s_struct)
+{
+	int precision;
+
+	precision = s_struct->precision;
+	if (precision > ft_strlen_atoi(num) && width != precision && precision > width && s_struct->flag == '0')
+	{
+		if (num < 0 && s_struct->flag == '0')
+		{
+			ft_putchar('-');
+			num *= -1;
+		}
+		while (precision - malloc_count(num) > 0)
+		{
+			ft_putchar('0');
+			precision--;
+		}
+		ft_puthex(num);
+		s_struct->flag = 'Z';
+	}
+}
+
+void			manage_hex_width(long num, int width, t_arg *s_struct)
+{
+	int precision;
+
+	precision = s_struct->precision;
+	if (width > ft_strlen_atoi(num) && width > precision && s_struct->flag != 'Z')
+	{
+		while (width - ft_strlen_atoi(num))
+		{
+			ft_putchar(' ');
+			width--;
+		}
+		ft_puthex(num);
+		s_struct->flag = 'Z';
+	}
+	else if ((width == ft_strlen_atoi(num) || width < ft_strlen_atoi(num)) && s_struct->flag != 'Z')
+	{
+		ft_puthex(num);
+		s_struct->flag = 'Z';
+	}
+}
+
+void		manage_hex_precesion(long num, int precision, t_arg *s_struct)
+{
+	int width;
+
+	width = s_struct->width;
+	if ((precision > ft_strlen_atoi(num) && width < precision && s_struct->flag == '!') ||
+	(width == precision && s_struct->flag == '!') || (s_struct->flag == '-' && width == 0))
+	{
+		if (num < 0)
+		{
+			ft_putchar('-');
+			num *= -1;
+		}
+		while (precision - malloc_count(num) > 0)
+		{
+			ft_putchar('0');
+			precision--;
+		}
+		ft_puthex(num);
+		s_struct->flag = 'Z';
+	}
+	else if ((precision == ft_strlen_atoi(num) || precision < ft_strlen_atoi(num)) && s_struct->flag != 'Z')
+	{
+		ft_puthex(num);
+		s_struct->flag = 'Z';
+	}
+}
+
+
+
 void		manage_hex(va_list *argptr, t_arg *s_struct)
 {
 	long	hex;
@@ -559,6 +767,13 @@ void		manage_hex(va_list *argptr, t_arg *s_struct)
 	precision = s_struct->precision;
 	width = s_struct->width;
 	hex = va_arg(*argptr, unsigned int);
+	if (width > 0 && precision > 0 && s_struct->flag != '!')
+		manage_hex_width_plus_precision_flags(hex, width, precision, precision, s_struct);
+	manage_hex_width_plus_precision(hex, width, precision, s_struct);
+	manage_hex_width_minus(hex, width, precision, s_struct);
+	manage_hex_zero(hex, width, s_struct);
+	manage_hex_width(hex, width, s_struct);
+	manage_hex_precesion(hex, precision, s_struct);
 }
 
 #pragma endregion HEX_MANAGE
