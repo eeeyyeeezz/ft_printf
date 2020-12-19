@@ -6,7 +6,7 @@
 #    By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/12/02 14:56:57 by gmorra            #+#    #+#              #
-#    Updated: 2020/12/17 14:44:13 by gmorra           ###   ########.fr        #
+#    Updated: 2020/12/19 20:11:59 by gmorra           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,13 +14,17 @@ NAME = libftprintf.a
 
 FLAGS = -Wall -Wextra -Werror
 
-HEADER = libftprintf.h
+HEADER = includes/libftprintf.h
 
 OPTION = -c -I $(HEADER)
 
 CC = gcc
 
-SRC = ft_printf.c
+SRC = ft_printf.c\
+	parsers/ft_parser_main.c parsers/ft_parsers.c\
+	src/int_manage_first.c src/int_manage_second.c src/libft_first.c src/libft_second.c src/manage_functions.c\
+
+COMPILE = gcc ft_printf.c main.c src/*.c parsers/*.c && ./a.out
 
 OBJ = $(SRC:.c=.o)
 
@@ -29,8 +33,11 @@ all: $(NAME)
 $(NAME): ${OBJ}
 	ar rc $(NAME) $(OBJ)
 
+COMPILE:
+	${COMPILE}
+
 clean:
-	rm -f $(OBJ) ${OBJ_BONUS}
+	rm -f $(OBJ)
 
 fclean: clean
 	rm -f $(NAME)

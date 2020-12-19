@@ -1,18 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
+/*   libftprintf.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/31 20:55:14 by gmorra            #+#    #+#             */
-/*   Updated: 2020/10/31 21:25:21 by gmorra           ###   ########.fr       */
+/*   Created: 2020/12/19 16:41:29 by gmorra            #+#    #+#             */
+/*   Updated: 2020/12/19 20:36:43 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/libft.h"
+#ifndef LIBFTPRINTF_H
+# define LIBFTPRINTF_H
+# include "ft_libft.h"
+# include "ft_parser.h"
+# include "int_manage.h"
+# include "ft_manage.h"
+# include <printf.h>
+# include <unistd.h>
+# include <stdlib.h>
+# include <stdarg.h>
 
-void	ft_putchar_fd(char c, int fd)
-{
-	write(fd, &c, 1);
-}
+int				ft_printf(const char *arr, ...);
+
+#endif

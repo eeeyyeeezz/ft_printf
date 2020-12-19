@@ -6,13 +6,11 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 19:36:20 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/19 15:59:28 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/19 20:36:18 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/libft.h"
-#include "includes/libft_printf.h"
-char				*ft_itoa(int n);
+#include "includes/libftprintf.h"
 
 int				main(void)
 {
@@ -62,12 +60,12 @@ int				main(void)
 	// ft_printf("Int  12345 :[%.2d] 1234567890 \n", -12345);
 	// printf("Int  12345 :[%.2d] 1234567890 \n", -12345);
 
-	ft_printf("[%-32s]\n", "abc");
-	printf("[%-32s]\n", "abc");
+	ft_printf("[%10.5s]\n", "Hello World");
+	printf("[%10.5s]\n", "Hello World");
 	printf("\n");
 
-	ft_printf("[%-16s]\n", "nark nark");
-	printf("[%-16s]\n", "nark nark");
+	ft_printf("[%.7s]\n", "nark nark");
+	printf("[%.7s]\n", "nark nark");
 	printf("\n");
 
 	ft_printf("[%.3s]\n", "hello");
