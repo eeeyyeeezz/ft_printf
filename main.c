@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 19:36:20 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/18 15:13:10 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/19 15:59:28 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,21 +61,19 @@ int				main(void)
 	// ft_printf("dva [%%]: %%\n");
 	// ft_printf("Int  12345 :[%.2d] 1234567890 \n", -12345);
 	// printf("Int  12345 :[%.2d] 1234567890 \n", -12345);
-	ft_printf("[%10.5d]\n", -216);
-	printf("[%10.5d]\n", -216);
-	ft_printf("\n");
 
-	ft_printf("[%8.5d]\n", 0);
-	printf("[%8.5d]\n", 0);
-	ft_printf("\n");
-
-	ft_printf("[%08.3d]\n", 8375);
-	printf("[%08.3d]\n", 8375);
+	ft_printf("[%-32s]\n", "abc");
+	printf("[%-32s]\n", "abc");
 	printf("\n");
 
-	ft_printf("[%08.3d]\n", -8473);
-	printf("[%08.3d]\n", -8473);
+	ft_printf("[%-16s]\n", "nark nark");
+	printf("[%-16s]\n", "nark nark");
 	printf("\n");
+
+	ft_printf("[%.3s]\n", "hello");
+	printf("[%.3s]\n", "hello");
+	printf("\n");
+}
 
 /*
 todo list:
@@ -93,4 +91,3 @@ todo list:
 6) Косячная ширина в парсере || (фикс)
 7) Точность 0 при аргументе 0 должно выводить пустоту
 */
-}
