@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/19 16:41:29 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/19 20:36:43 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/20 00:58:11 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # include "ft_libft.h"
 # include "ft_parser.h"
 # include "int_manage.h"
+# include "arr_manage.h"
 # include "ft_manage.h"
 # include <printf.h>
 # include <unistd.h>
