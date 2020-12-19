@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 19:36:20 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/19 20:36:18 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/19 23:10:42 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,16 +60,16 @@ int				main(void)
 	// ft_printf("Int  12345 :[%.2d] 1234567890 \n", -12345);
 	// printf("Int  12345 :[%.2d] 1234567890 \n", -12345);
 
-	ft_printf("[%10.5s]\n", "Hello World");
-	printf("[%10.5s]\n", "Hello World");
+	ft_printf("[%-.09s]\n", "hi low\0don't print me lol\0");
+	printf("[%-.09s]\n", "hi low\0don't print me lol\0");
 	printf("\n");
 
-	ft_printf("[%.7s]\n", "nark nark");
-	printf("[%.7s]\n", "nark nark");
+	ft_printf("[%-8.s]\n", NULL);
+	printf("[%-8.s]\n", NULL);
 	printf("\n");
 
-	ft_printf("[%.3s]\n", "hello");
-	printf("[%.3s]\n", "hello");
+	ft_printf("[%-3.s]\n", NULL);
+	printf("[%-3.s]\n", NULL);
 	printf("\n");
 }
 

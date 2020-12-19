@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 17:43:11 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/19 21:36:20 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/19 23:15:36 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,27 +16,36 @@
 static	void			manage_arr_min_flag_width_precision(const char *arr, int width, int precision, t_arg *s_struct)
 {
 	int i;
-	int true_precision;
+	int count;
 
 	i = 0;
-	true_precision = precision;
-	while (precision-- > ft_strlen(arr))
-		ft_putchar(arr[i++]);
-	ft_putstr(arr);
-	if (true_precision > ft_strlen(arr))
-		while (width-- - true_precision > 0)
+	count = 0;
+	if ((width > 0 && precision > 0 && s_struct->flag == '-') ||
+	(width > 0 && precision == 0 && s_struct->zero_flag == 1 && s_struct->flag == '-'))
+	{
+		while (precision-- > 0 && ft_strlen(arr) > precision && arr[i] != '\0')
+		{
+			ft_putchar(arr[i++]);
+			count++;
+		}
+		if (precision >= ft_strlen(arr))
+		{
+			ft_putstr(arr);
+			count = ft_strlen(arr);
+		}
+		while (width-- - count > 0)
 			ft_putchar(' ');
-	while (width-- - ft_strlen(arr) > 0 && true_precision < ft_strlen(arr))
-		ft_putchar(' ');
-	s_struct->flag = 'Z';
+		s_struct->flag = 'Z';
+	}
 }
 
-static	void			manage_arr_width_plus_precision_flags(const char *arr, int width, int precision, t_arg *s_struct)
+static	void			manage_arr_width_plus_precision_flag(const char *arr, int width, int precision, t_arg *s_struct)
 {
 	int true_precision;
 
 	true_precision = precision;
-	if (width > 0 && precision > 0 && s_struct->flag == '-')
+	if ((width > 0 && precision > 0 && s_struct->flag == '-') ||
+	(width > 0 && precision == 0 && s_struct->zero_flag == 1 && s_struct->flag == '-'))
 		manage_arr_min_flag_width_precision(arr, width, precision, s_struct);
 	else if (width == 0 && precision == 0 && s_struct->zero_flag == 0 && s_struct->flag == '!')
 	{
@@ -51,21 +60,15 @@ static	void			manage_arr_width_plus_precision(const char *arr, int width, int pr
 	int i;
 
 	i = 0;
-	if (width > 0 && precision > 0 && s_struct->flag == '!')
+	if ((width > 0 && precision > 0 && s_struct->flag == '!') ||
+	(width > 0 && precision == 0 && s_struct->zero_flag == 1 && s_struct->flag == '!'))
 	{
 		if (precision < ft_strlen(arr))
 			width += ft_strlen(arr) - precision;
-		while (width - ft_strlen(arr) > 0)
-		{
+		while (width-- - ft_strlen(arr) > 0)
 			ft_putchar(' ');
-			width--;
-		}
-		while (precision > 0 && ft_strlen(arr) > precision)
-		{
-			ft_putchar(arr[i]);
-			i++;
-			precision--;
-		}
+		while (precision-- > 0 && ft_strlen(arr) > precision && arr[i] != '\0')
+			ft_putchar(arr[i++]);
 		if (precision >= ft_strlen(arr))
 			ft_putstr(arr);
 		s_struct->flag = 'Z';
@@ -93,14 +96,13 @@ static	void			manage_arr_width(const char *arr, int width, t_arg *s_struct)
 	precision = s_struct->precision;
 	if (width > ft_strlen(arr) && width > precision && s_struct->flag != 'Z')
 	{
-		while (width - ft_strlen(arr) && s_struct->flag != '0')
-		{
+		while (width-- - ft_strlen(arr) && s_struct->flag != '0')
 			ft_putchar(' ');
-			width--;
-		}
 		ft_putstr(arr);
 		s_struct->flag = 'Z';
 	}
+	if (s_struct->zero_flag == 1 && s_struct->precision == 0)
+		s_struct->flag = 'Z';
 	else if ((width == ft_strlen(arr) && width < ft_strlen(arr)) && s_struct->flag != 'Z')
 	{
 		ft_putstr(arr);
@@ -118,7 +120,7 @@ static	void		manage_arr_precesion(const char *arr, int precision, t_arg *s_struc
 	if ((precision < ft_strlen(arr) && width < precision && s_struct->flag == '!') ||
 	(width == precision && s_struct->flag == '!') || (s_struct->flag == '-' && width == 0))
 	{
-		while (precision-- > 0)
+		while (precision-- > 0 && arr[i] != '\0')
 			ft_putchar(arr[i++]);
 		s_struct->flag = 'Z';
 	}
@@ -137,8 +139,9 @@ void 				manage_string(va_list *argptr, t_arg *s_struct)
 
 	precision = s_struct->precision;
 	width = s_struct->width;
-	arr = va_arg(*argptr, char*);
-	manage_arr_width_plus_precision_flags(arr, width, precision, s_struct);
+	if (!(arr = va_arg(*argptr, char*)))
+		arr = "(null)";
+	manage_arr_width_plus_precision_flag(arr, width, precision, s_struct);
 	manage_arr_width_plus_precision(arr, width, precision, s_struct);
 	manage_arr_width_minus(arr, width, precision, s_struct);
 	manage_arr_width(arr, width, s_struct);
