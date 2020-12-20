@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/19 16:54:07 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/19 16:54:40 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/20 20:23:11 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,5 +85,21 @@ int			ft_atoi(const char *str)
 		i++;
 	}
 	return (res);
+}
+
+void		ft_putuns(unsigned int nb, t_arg *s_struct)
+{
+	int *ptr;
+
+	ptr = 0;
+	if (nb == 0 && s_struct->zero_flag == 1 && s_struct->precision == 0)
+		return ;
+	else if (nb / 10 > 0)
+	{
+		ft_putnbr(nb / 10, s_struct);
+		ft_putchar(nb % 10 + 48);
+	}
+	else
+		ft_putchar(nb + 48);
 }
 

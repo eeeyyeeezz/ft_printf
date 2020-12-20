@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/19 16:38:41 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/19 21:36:51 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/20 20:47:46 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,11 @@ static	void		ft_parser_precision(const char *arr, t_arg *s_struct, va_list *argp
 	if (arr[i - 1] == '.')
 		s_struct->precision = ft_atoi((char *)&arr[i]);
 	if (s_struct->precision == 0 && arr[i - 1] == '*')
+	{
 		s_struct->precision = va_arg(*argptr, int);
+		if (s_struct->precision < 0)
+			s_struct->precision *= -1;
+	}
 }
 
 void		ft_parser(const char *arr, t_arg *s_struct, va_list *argptr)

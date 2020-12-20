@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_parsers.c                                       :+:      :+:    :+:   */
+/*   ft_parser_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/19 16:43:48 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/19 16:45:04 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/20 20:47:50 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,11 @@ void		ft_parser_width(const char *arr, t_arg *s_struct, va_list *argptr)
 		jump++;
 	s_struct->width = ft_atoi((char *)&arr[jump]);
 	if (s_struct->width == 0 && arr[jump] == '*')
+	{
 		s_struct->width = va_arg(*argptr, int);
+		if (s_struct->width < 0)
+			s_struct->width *= -1;
+	}
 }
 
 void		ft_parser_flags(const char *arr, t_arg *s_struct)

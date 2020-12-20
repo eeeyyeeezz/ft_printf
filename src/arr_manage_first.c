@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/19 23:18:35 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/19 23:20:22 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/20 19:21:14 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,25 @@ void			manage_arr_width_plus_precision(const char *arr, int width, int precision
 			ft_putstr(arr);
 		s_struct->flag = 'Z';
 	}
+}
+
+void 				manage_chr(va_list *argptr, t_arg *s_struct)
+{
+	char	letter;
+
+	letter = va_arg(*argptr, int);
+	if (s_struct->width > 0 && s_struct->flag == '!')
+	{
+		while(--s_struct->width)
+			ft_putchar(' ');
+	ft_putchar(letter);
+	}
+	else if (s_struct->width > 0 && s_struct->flag == '-')
+	{
+		ft_putchar(letter);
+		while(--s_struct->width)
+			ft_putchar(' ');
+	}
+	else
+		ft_putchar(letter);
 }
