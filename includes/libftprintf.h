@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/19 16:41:29 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/20 20:56:05 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/20 20:56:44 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # include <stdarg.h>
 
 int				ft_printf(const char *arr, ...);
-void			manage_fuction(va_list *argptr, t_arg *s_struct);
+void			manage_fuction(va_list argptr, t_arg *s_struct);
 int				malloc_count(long num);
 
 #endif

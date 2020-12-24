@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 19:36:20 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/20 20:52:41 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/24 18:23:03 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 int				main(void)
 {
-	printf("ORIGA PRINTF\n");
-	printf("-----\n\n");
+	// printf("ORIGA PRINTF\n");
+	// printf("-----\n\n");
 
-	printf("\nMEIN FT_PRINTF\n");
-	printf("-----\n\n");
+	// printf("\nMEIN FT_PRINTF\n");
+	// printf("-----\n\n");
 
-	ft_printf("[%*s]\n", 37, "abc");
-	// printf("[%*s]\n", -32, "abc");
+
+	ft_printf("%5d", 50);
 }
 
 /*
@@ -39,4 +39,6 @@ todo list:
 5) %010.5d не работает || fix
 6) Косячная ширина в парсере || (фикс)
 7) Точность 0 при аргументе 0 должно выводить пустоту || (фикс)
+8) ft_printf("Lalalala, %d%% des gens qui parlent à Ly adorent %s. Ou Presque. %p\n", 100, "Ly", &r00); || костыль %% ломает все
+9) если в istype добавить || c == '%' прыжок неправильный
 */

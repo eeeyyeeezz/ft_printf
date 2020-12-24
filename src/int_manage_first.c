@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   int_manage.c                                       :+:      :+:    :+:   */
+/*   int_manage_first.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/19 16:56:03 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/19 16:59:32 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/21 17:03:31 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void			manage_int_zero(int num, int width, t_arg *s_struct)
 	precision = s_struct->precision;
 	if (width > ft_strlen_atoi(num) && width != precision && width > precision && s_struct->flag == '0')
 	{
-		if (num < 0 && s_struct->flag == '0')
+		if (num < 0 && num != -2147483648 && s_struct->flag == '0')
 		{
 			ft_putchar('-');
 			width -= 1;
@@ -60,7 +60,7 @@ void			manage_int_width(int num, int width, t_arg *s_struct)
 	{
 		if (s_struct->zero_flag == 1 && precision == 0 && num == 0)
 			width += 1;
-		while (width - ft_strlen_atoi(num) && s_struct->flag != '0')
+		while (width - ft_strlen_atoi(num) && num != -2147483648 && s_struct->flag != '0')
 		{
 			ft_putchar(' ');
 			width--;
@@ -83,7 +83,7 @@ void		manage_int_precesion(int num, int precision, t_arg *s_struct)
 	if ((precision > ft_strlen_atoi(num) && width < precision && s_struct->flag == '!') ||
 	(width == precision && s_struct->flag == '!') || (s_struct->flag == '-' && width == 0))
 	{
-		if (num < 0)
+		if (num < 0 && num != -2147483648)
 		{
 			ft_putchar('-');
 			num *= -1;

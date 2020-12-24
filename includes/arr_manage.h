@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/19 23:24:37 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/20 19:21:04 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/24 15:21:52 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void			manage_arr_width_plus_precision(const char *arr, int width, int precision
 void			manage_arr_width_minus(const char *arr, int width, int precision, t_arg *s_struct);
 void			manage_arr_width(const char *arr, int width, t_arg *s_struct);
 void			manage_arr_precesion(const char *arr, int precision, t_arg *s_struct);
-void			manage_chr(va_list *argptr, t_arg *s_struct);
+void			manage_chr(va_list argptr, t_arg *s_struct);
+void 			manage_prc(t_arg *s_struct);
 
 #endif

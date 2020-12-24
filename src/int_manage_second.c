@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/19 16:59:44 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/19 16:59:57 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/21 17:45:34 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void			manage_int_zero_flag_width_precision(int num, int width, int precision, t
 	}
 	while (width-- > ft_strlen_atoi(num) && s_struct->flag == '0')
 		ft_putchar(' ');
-	if (num < 0)
+	if (num < 0 && num != -2147483648)
 	{
 		ft_putchar('-');
 		num *= -1;
@@ -44,7 +44,7 @@ void			manage_int_min_flag_width_precision(int num, int width, int precision, t_
 	int true_precision;
 
 	true_precision = precision;
-	if (num < 0)
+	if (num < 0 && num != -2147483648)
 	{
 		ft_putchar('-');
 		num *= -1;
@@ -89,7 +89,7 @@ void			manage_int_width_plus_precision(int num, int width, int precision, t_arg 
 		}
 		while (width-- > ft_strlen_atoi(num) && s_struct->flag != 'A')
 			ft_putchar(' ');
-		if (num < 0)
+		if (num < 0 && num != -2147483648)
 		{
 			num *= -1;
 			ft_putchar('-');

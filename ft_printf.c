@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 17:43:11 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/20 20:56:10 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/24 15:21:24 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ void		ft_putptr(long num, t_arg *s_struct)
 		return ;
 	if (!(str = malloc(malloc_count(num))))
 		return ;
+	write(1, "0x", 2);
 	if (num == 0)
 		write(1, "0", 1);
-	write(1, "0x", 2);
 	while (num > 0)
 	{
 		str[i] = ptr_word((num % 16));
@@ -71,6 +71,7 @@ void			manage_ptr_zero_flag_width_precision(long num, int width, int precision, 
 	int true_precision;
 
 	true_precision = precision;
+	width -=2 ;
 	if (precision > malloc_count(num) && num < 0 && s_struct->flag == '0')
 		width -= 1;
 	if (precision > malloc_count(num) && s_struct->flag == '0')
@@ -98,6 +99,7 @@ void			manage_ptr_min_flag_width_precision(long num, int width, int precision, t
 	int true_precision;
 
 	true_precision = precision;
+	width -= 2;
 	if (num < 0)
 	{
 		ft_putchar('-');
@@ -131,6 +133,7 @@ void			manage_ptr_width_plus_precision(long num, int width, int precision, t_arg
 	int true_precision;
 
 	true_precision = precision;
+	width -= 2;
 	if (width > precision && precision > 0 && s_struct->flag == '!')
 	{
 		if (precision > malloc_count(num) && num < 0)
@@ -157,6 +160,7 @@ void			manage_ptr_width_plus_precision(long num, int width, int precision, t_arg
 
 void			manage_ptr_width_minus(long num, int width, int precision, t_arg *s_struct)
 {
+	width -= 2;
 	if (s_struct->zero_flag == 1 && precision == 0 && num == 0)
 			width += 1;
 	if (width > malloc_count(num) && width > precision && s_struct->flag == '-')
@@ -176,6 +180,7 @@ void			manage_ptr_zero(long num, int width, t_arg *s_struct)
 	int precision;
 
 	precision = s_struct->precision;
+	width -= 2;
 	if (width > malloc_count(num) && width != precision && width > precision && s_struct->flag == '0')
 	{
 		if (num < 0 && s_struct->flag == '0')
@@ -199,6 +204,7 @@ void			manage_ptr_width(long num, int width, t_arg *s_struct)
 	int precision;
 
 	precision = s_struct->precision;
+	width -= 2;
 	if (width > malloc_count(num) && width > precision && s_struct->flag != 'Z')
 	{
 		if (s_struct->zero_flag == 1 && precision == 0 && num == 0)
@@ -223,6 +229,7 @@ void		manage_ptr_precesion(long num, int precision, t_arg *s_struct)
 	int width;
 
 	width = s_struct->width;
+	// precision -= 2;			// ???
 	if ((precision > malloc_count(num) && width < precision && s_struct->flag == '!') ||
 	(width == precision && s_struct->flag == '!') || (s_struct->flag == '-' && width == 0))
 	{
@@ -243,7 +250,7 @@ void		manage_ptr_precesion(long num, int precision, t_arg *s_struct)
 	}
 }
 
-void 				manage_ptr(va_list *argptr, t_arg *s_struct)
+void 				manage_ptr(va_list argptr, t_arg *s_struct)
 {
 	unsigned long long	ptr;
 	int					width;
@@ -251,7 +258,7 @@ void 				manage_ptr(va_list *argptr, t_arg *s_struct)
 
 	precision = s_struct->precision;
 	width = s_struct->width;
-	ptr = (unsigned long long)va_arg(*argptr, void*);
+	ptr = (unsigned long long)va_arg(argptr, void*);
 	manage_ptr_width_plus_precision_flags(ptr, width, precision, s_struct);
 	manage_ptr_width_plus_precision(ptr, width, precision, s_struct);
 	manage_ptr_width_minus(ptr, width, precision, s_struct);
@@ -264,11 +271,9 @@ void 				manage_ptr(va_list *argptr, t_arg *s_struct)
 
 #pragma region PRC_MANAGE
 
-
-
 #pragma endregion PRC_MANAGE
 
-void			manage_fuction(va_list *argptr, t_arg *s_struct)
+void			manage_fuction(va_list argptr, t_arg *s_struct)
 {
 	if (s_struct->type == 'd' || s_struct->type == 'i')
 		manage_int(argptr, s_struct);
@@ -282,13 +287,13 @@ void			manage_fuction(va_list *argptr, t_arg *s_struct)
 		manage_hex(argptr, s_struct);
 	if (s_struct->type == 'p')
 		manage_ptr(argptr, s_struct);
-	// if (s_struct->type == '%')
-	// 	manage_per(argptr, s_struct);
+	if (s_struct->type == '%')
+		manage_prc(s_struct);
 }
 
 int				ft_printf(const char *arr, ...)
 {
-	int			i;
+	int				i;
 	static va_list	argptr;
 	t_arg 			s_struct;
 
@@ -298,9 +303,9 @@ int				ft_printf(const char *arr, ...)
 	{
 		if (arr[i] == '%')
 		{
-			ft_parser((char *)&arr[i], &s_struct, &argptr);
+			ft_parser((char *)&arr[i], &s_struct, argptr);
 			i += s_struct.count;
-			manage_fuction(&argptr, &s_struct);
+			manage_fuction(argptr, &s_struct);
 		}
 		else
 		{
