@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/19 16:43:48 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/24 18:13:33 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/24 18:37:29 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,4 @@ void		ft_parser_flags(const char *arr, t_arg *s_struct)
 	}
 	if (flag == 1)
 		s_struct->flag = '-';
-}
-
-void		ft_parser_count(const char *arr, t_arg *s_struct)
-{
-	while (!(ft_istype(arr[s_struct->count])))
-			s_struct->count++;
 }

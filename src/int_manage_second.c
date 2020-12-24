@@ -6,13 +6,14 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/19 16:59:44 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/21 17:45:34 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/24 22:25:30 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libftprintf.h"
 
-void			manage_int_zero_flag_width_precision(int num, int width, int precision, t_arg *s_struct)
+void			mg_int_zero_flag_width_precision(int num, int width,
+				int precision, t_arg *s_struct)
 {
 	int true_precision;
 
@@ -39,7 +40,8 @@ void			manage_int_zero_flag_width_precision(int num, int width, int precision, t
 	s_struct->flag = 'Z';
 }
 
-void			manage_int_min_flag_width_precision(int num, int width, int precision, t_arg *s_struct)
+void			mg_int_min_flag_width_precision(int num, int width,
+				int precision, t_arg *s_struct)
 {
 	int true_precision;
 
@@ -56,23 +58,26 @@ void			manage_int_min_flag_width_precision(int num, int width, int precision, t_
 	if (true_precision > ft_strlen_atoi(num))
 		while (width-- - true_precision > 0)
 			ft_putchar(' ');
-	while (width-- - ft_strlen_atoi(num) > 0 && true_precision < ft_strlen_atoi(num))
+	while (width-- - ft_strlen_atoi(num) > 0 &&
+	true_precision < ft_strlen_atoi(num))
 		ft_putchar(' ');
 	s_struct->flag = 'Z';
 }
 
-void			manage_int_width_plus_precision_flags(int num, int width, int precision, t_arg *s_struct)
+void			mg_int_width_plus_precision_flags(int num, int width,
+				int precision, t_arg *s_struct)
 {
 	int true_precision;
 
 	true_precision = precision;
 	if (width > 0 && precision > 0 && s_struct->flag == '0')
-		manage_int_zero_flag_width_precision(num, width, precision, s_struct);
+		mg_int_zero_flag_width_precision(num, width, precision, s_struct);
 	else if (width > 0 && precision > 0 && s_struct->flag == '-')
-		manage_int_min_flag_width_precision(num, width, precision, s_struct);
+		mg_int_min_flag_width_precision(num, width, precision, s_struct);
 }
 
-void			manage_int_width_plus_precision(int num, int width, int precision, t_arg *s_struct)
+void			mg_int_width_plus_precision(int num, int width,
+				int precision, t_arg *s_struct)
 {
 	int true_precision;
 

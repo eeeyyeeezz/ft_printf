@@ -6,33 +6,29 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/19 16:52:25 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/24 16:41:03 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/24 22:30:36 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libftprintf.h"
 
-void		ft_putchar(char c)
+int			ft_putchar(char c)
 {
-	write(1, &c, 1);
+	int		i;
+
+	i = write(1, &c, 1);
+	return (i);
 }
 
-int		ft_toupper(int c)
-{
-	if (c >= 97 && c <= 122)
-		c -= 32;
-	return (c);
-}
-
-void		ft_putstr(const char *s)
+void		ft_putstr(const char *s, t_arg *s_struct)
 {
 	if (s == NULL)
 		return ;
 	while (*s)
-		write(1, &*s++, 1);
+		s_struct->r_r += write(1, &*s++, 1);
 }
 
-int		ft_isdigit(int c)
+int			ft_isdigit(int c)
 {
 	if (c >= '0' && c <= '9')
 		return (1);
@@ -40,7 +36,7 @@ int		ft_isdigit(int c)
 		return (0);
 }
 
-int		ft_istype(int c)
+int			ft_istype(int c)
 {
 	if ((c >= 'a' && c <= 'z') || c == 'X')
 		return (1);

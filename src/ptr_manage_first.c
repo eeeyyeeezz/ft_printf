@@ -1,40 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   hex_manage_first.c                                 :+:      :+:    :+:   */
+/*   ptr_manage_first.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/12/20 17:14:40 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/24 21:36:52 by gmorra           ###   ########.fr       */
+/*   Created: 2020/12/24 20:54:53 by gmorra            #+#    #+#             */
+/*   Updated: 2020/12/24 22:15:40 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libftprintf.h"
 
-char			hex_word(long num, t_arg *s_struct)
+char			ptr_word(long num)
 {
 	char letter;
 
-	letter = 0;
+	letter = '\0';
 	if (num >= 0 && num <= 9)
 		return (num + 48);
 	else if (num == 10)
-		letter = s_struct->type == 'x' ? 'a' : 'A';
+		letter = 'a';
 	else if (num == 11)
-		letter = s_struct->type == 'x' ? 'b' : 'B';
+		letter = 'b';
 	else if (num == 12)
-		letter = s_struct->type == 'x' ? 'c' : 'C';
+		letter = 'c';
 	else if (num == 13)
-		letter = s_struct->type == 'x' ? 'd' : 'D';
+		letter = 'd';
 	else if (num == 14)
-		letter = s_struct->type == 'x' ? 'e' : 'E';
+		letter = 'e';
 	else if (num == 15)
-		letter = s_struct->type == 'x' ? 'f' : 'F';
+		letter = 'f';
 	return (letter);
 }
 
-void			ft_puthex(long num, t_arg *s_struct)
+void			ft_putptr(long num, t_arg *s_struct)
 {
 	int		i;
 	int		a;
@@ -48,11 +48,12 @@ void			ft_puthex(long num, t_arg *s_struct)
 		return ;
 	if (!(str = malloc(malloc_count(num))))
 		return ;
+	write(1, "0x", 2);
 	if (num == 0)
 		write(1, "0", 1);
 	while (num > 0)
 	{
-		str[i++] = hex_word((num % 16), s_struct);
+		str[i++] = ptr_word((num % 16));
 		num = num / 16;
 	}
 	i -= 1;
@@ -62,12 +63,13 @@ void			ft_puthex(long num, t_arg *s_struct)
 	str = NULL;
 }
 
-void			mg_hex_zero_flag_width_precision(long num, int width,
-int precision, t_arg *s_struct)
+void			mg_ptr_zero_flag_width_precision(long num, int width,
+				int precision, t_arg *s_struct)
 {
 	int true_precision;
 
 	true_precision = precision;
+	width -= 2;
 	if (precision > malloc_count(num) && num < 0 && s_struct->flag == '0')
 		width -= 1;
 	if (precision > malloc_count(num) && s_struct->flag == '0')
@@ -86,16 +88,17 @@ int precision, t_arg *s_struct)
 	}
 	while (precision-- > malloc_count(num))
 		ft_putchar('0');
-	ft_puthex(num, s_struct);
+	ft_putptr(num, s_struct);
 	s_struct->flag = 'Z';
 }
 
-void			mg_hex_min_flag_width_precision(long num, int width,
-int precision, t_arg *s_struct)
+void			mg_ptr_min_flag_width_precision(long num, int width,
+				int precision, t_arg *s_struct)
 {
 	int true_precision;
 
 	true_precision = precision;
+	width -= 2;
 	if (num < 0)
 	{
 		ft_putchar('-');
@@ -104,7 +107,7 @@ int precision, t_arg *s_struct)
 	}
 	while (precision-- > malloc_count(num))
 		ft_putchar('0');
-	ft_puthex(num, s_struct);
+	ft_putptr(num, s_struct);
 	if (true_precision > malloc_count(num))
 		while (width-- - true_precision > 0)
 			ft_putchar(' ');
@@ -114,8 +117,8 @@ int precision, t_arg *s_struct)
 	s_struct->flag = 'Z';
 }
 
-void			mg_hex_width_plus_precision_flags(long num, int width,
-int precision, t_arg *s_struct)
+void			mg_ptr_width_plus_precision_flags(long num, int width,
+				int precision, t_arg *s_struct)
 {
 	int true_precision;
 

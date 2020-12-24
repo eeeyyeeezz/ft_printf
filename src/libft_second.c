@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/19 16:54:07 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/21 17:02:05 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/24 22:30:54 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,18 +36,18 @@ void		ft_putnbr(int nb, t_arg *s_struct)
 		return ;
 	if (nb < 0 && nb != -2147483648)
 	{
-		write(1, "-", 1);
+		s_struct->r_r += write(1, "-", 1);
 		nb *= -1;
 	}
 	if (nb == -2147483648)
-		ft_putstr("-2147483648");
+		ft_putstr("-2147483648", s_struct);
 	else if (nb / 10 > 0)
 	{
 		ft_putnbr(nb / 10, s_struct);
-		ft_putchar(nb % 10 + 48);
+		s_struct->r_r += ft_putchar(nb % 10 + 48);
 	}
 	else
-		ft_putchar(nb + 48);
+		s_struct->r_r += ft_putchar(nb + 48);
 }
 
 int			ft_strlen(const char *s)
@@ -102,4 +102,3 @@ void		ft_putuns(unsigned int nb, t_arg *s_struct)
 	else
 		ft_putchar(nb + 48);
 }
-

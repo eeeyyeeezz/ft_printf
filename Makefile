@@ -6,7 +6,7 @@
 #    By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/12/02 14:56:57 by gmorra            #+#    #+#              #
-#    Updated: 2020/12/21 16:49:55 by gmorra           ###   ########.fr        #
+#    Updated: 2020/12/24 21:17:49 by gmorra           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,7 @@ SRC = ft_printf.c\
 	src/malloc_count.c\
 	src/hex_manage_first.c src/hex_manage_second.c\
 	src/uns_manage_first.c src/uns_manage_second.c\
+	src/ptr_manage_first.c src/ptr_manage_second.c\
 
 COMPILE = gcc -g -Wall -Wextra -Werror ft_printf.c main.c src/*.c parsers/*.c && ./a.out
 
