@@ -6,18 +6,16 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/19 16:52:25 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/24 22:30:36 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/25 19:18:38 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libftprintf.h"
 
-int			ft_putchar(char c)
+void			ft_putchar(char c, t_arg *s_struct)
 {
-	int		i;
-
-	i = write(1, &c, 1);
-	return (i);
+	write(1, &c, 1);
+	s_struct->r_r++;
 }
 
 void		ft_putstr(const char *s, t_arg *s_struct)
@@ -42,4 +40,19 @@ int			ft_istype(int c)
 		return (1);
 	else
 		return (0);
+}
+
+int			ft_strlen_minus(int n)
+{
+	int len;
+
+	len = 0;
+	if (n == 0)
+		++len;
+	while (n != 0)
+	{
+		++len;
+		n = n / 10;
+	}
+	return (len);
 }

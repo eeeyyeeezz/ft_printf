@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/24 21:11:35 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/24 22:19:48 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/25 17:16:38 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,18 @@ void				mg_ptr_width_plus_precision(long num, int width,
 	if (precision > malloc_count(num))
 	{
 		while (width-- > precision)
-			ft_putchar(' ');
+			ft_putchar(' ', s_struct);
 		s_struct->flag = 'A';
 	}
 	while (width-- > malloc_count(num) && s_struct->flag != 'A')
-		ft_putchar(' ');
+		ft_putchar(' ', s_struct);
 	if (num < 0)
 	{
 		num *= -1;
-		ft_putchar('-');
+		ft_putchar('-', s_struct);
 	}
 	while (true_precision-- > malloc_count(num))
-		ft_putchar('0');
+		ft_putchar('0', s_struct);
 	ft_putptr(num, s_struct);
 	s_struct->flag = 'Z';
 }
@@ -51,7 +51,7 @@ void				mg_ptr_width_minus(long num, int width,
 		ft_putptr(num, s_struct);
 		while (width - malloc_count(num))
 		{
-			ft_putchar(' ');
+			ft_putchar(' ', s_struct);
 			width--;
 		}
 		s_struct->flag = 'Z';
@@ -69,13 +69,13 @@ void				mg_ptr_zero(long num, int width, t_arg *s_struct)
 	{
 		if (num < 0 && s_struct->flag == '0')
 		{
-			ft_putchar('-');
+			ft_putchar('-', s_struct);
 			width -= 1;
 			num *= -1;
 		}
 		while (width - malloc_count(num) > 0)
 		{
-			ft_putchar('0');
+			ft_putchar('0', s_struct);
 			width--;
 		}
 		ft_putptr(num, s_struct);
@@ -95,7 +95,7 @@ void				mg_ptr_width(long num, int width, t_arg *s_struct)
 			width += 1;
 		while (width - malloc_count(num) && s_struct->flag != '0')
 		{
-			ft_putchar(' ');
+			ft_putchar(' ', s_struct);
 			width--;
 		}
 		ft_putptr(num, s_struct);
@@ -121,11 +121,11 @@ void				mg_ptr_precesion(long num, int precision, t_arg *s_struct)
 	{
 		if (num < 0)
 		{
-			ft_putchar('-');
+			ft_putchar('-', s_struct);
 			num *= -1;
 		}
 		while (precision-- - malloc_count(num) > 0)
-			ft_putchar('0');
+			ft_putchar('0', s_struct);
 		ft_putptr(num, s_struct);
 		s_struct->flag = 'Z';
 	}

@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 17:43:11 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/24 22:23:06 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/25 20:55:09 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,17 +37,19 @@ int				ft_printf(const char *arr, ...)
 	t_arg			s_struct;
 
 	i = -1;
+	s_struct.r_r = 0;
 	va_start(argptr, arr);
 	while (arr[++i])
 	{
 		if (arr[i] == '%')
 		{
 			ft_parser((char *)&arr[i], &s_struct, argptr);
+			// printf("width [%d] percesion [%d] flag [%c] ", s_struct.width, s_struct.precision, s_struct.flag);
 			i += s_struct.count;
 			manage_fuction(argptr, &s_struct);
 		}
 		else
-			s_struct.r_r += ft_putchar(arr[i]);
+			ft_putchar(arr[i], &s_struct);
 	}
 	va_end(argptr);
 	return (s_struct.r_r);

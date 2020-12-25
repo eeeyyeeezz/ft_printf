@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/19 16:38:41 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/24 22:36:27 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/25 20:10:40 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ static	void		ft_parser_precision(const char *arr,
 void				ft_parser(const char *arr, t_arg *s_struct, va_list argptr)
 {
 	s_struct->len = 0;
-	s_struct->r_r = 0;
 	s_struct->zero_flag = 0;
 	s_struct->precision = 0;
 	s_struct->count = 0;

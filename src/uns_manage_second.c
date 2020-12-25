@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/20 18:44:53 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/24 22:25:51 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/25 17:17:28 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ void			mg_uns_zero_flag_width_precision(unsigned int num, int width,
 	if (precision > ft_strlen_atoi(num) && s_struct->flag == '0')
 	{
 		while (width-- > precision)
-			ft_putchar(' ');
+			ft_putchar(' ', s_struct);
 		s_struct->flag = 'A';
 	}
 	while (width-- > ft_strlen_atoi(num) && s_struct->flag == '0')
-		ft_putchar(' ');
+		ft_putchar(' ', s_struct);
 	while (precision-- > ft_strlen_atoi(num))
-		ft_putchar('0');
+		ft_putchar('0', s_struct);
 	ft_putuns(num, s_struct);
 	s_struct->flag = 'Z';
 }
@@ -39,14 +39,14 @@ void			mg_uns_min_flag_width_precision(unsigned int num, int width,
 
 	true_precision = precision;
 	while (precision-- > ft_strlen_atoi(num))
-		ft_putchar('0');
+		ft_putchar('0', s_struct);
 	ft_putuns(num, s_struct);
 	if (true_precision > ft_strlen_atoi(num))
 		while (width-- - true_precision > 0)
-			ft_putchar(' ');
+			ft_putchar(' ', s_struct);
 	while (width-- - ft_strlen_atoi(num) > 0 &&
 	true_precision < ft_strlen_atoi(num))
-		ft_putchar(' ');
+		ft_putchar(' ', s_struct);
 	s_struct->flag = 'Z';
 }
 
@@ -73,13 +73,13 @@ void			mg_uns_width_plus_precision(unsigned int num, int width,
 		if (precision > ft_strlen_atoi(num))
 		{
 			while (width-- > precision)
-				ft_putchar(' ');
+				ft_putchar(' ', s_struct);
 			s_struct->flag = 'A';
 		}
 		while (width-- > ft_strlen_atoi(num) && s_struct->flag != 'A')
-			ft_putchar(' ');
+			ft_putchar(' ', s_struct);
 		while (true_precision-- > ft_strlen_atoi(num))
-			ft_putchar('0');
+			ft_putchar('0', s_struct);
 		ft_putuns(num, s_struct);
 		s_struct->flag = 'Z';
 	}

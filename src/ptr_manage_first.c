@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/24 20:54:53 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/24 22:15:40 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/25 17:34:09 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ void			ft_putptr(long num, t_arg *s_struct)
 		return ;
 	if (!(str = malloc(malloc_count(num))))
 		return ;
-	write(1, "0x", 2);
+	s_struct->r_r += write(1, "0x", 2);
 	if (num == 0)
-		write(1, "0", 1);
+		ft_putchar('0', s_struct);
 	while (num > 0)
 	{
 		str[i++] = ptr_word((num % 16));
@@ -58,7 +58,7 @@ void			ft_putptr(long num, t_arg *s_struct)
 	}
 	i -= 1;
 	while (i >= 0)
-		write(1, &str[i--], 1);
+		ft_putchar(str[i--], s_struct);
 	free(str);
 	str = NULL;
 }
@@ -75,19 +75,19 @@ void			mg_ptr_zero_flag_width_precision(long num, int width,
 	if (precision > malloc_count(num) && s_struct->flag == '0')
 	{
 		while (width-- > precision)
-			ft_putchar(' ');
+			ft_putchar(' ', s_struct);
 		s_struct->flag = 'A';
 	}
 	while (width-- > malloc_count(num) && s_struct->flag == '0')
-		ft_putchar(' ');
+		ft_putchar(' ', s_struct);
 	if (num < 0)
 	{
-		ft_putchar('-');
+		ft_putchar('-', s_struct);
 		num *= -1;
 		width -= 1;
 	}
 	while (precision-- > malloc_count(num))
-		ft_putchar('0');
+		ft_putchar('0', s_struct);
 	ft_putptr(num, s_struct);
 	s_struct->flag = 'Z';
 }
@@ -101,19 +101,19 @@ void			mg_ptr_min_flag_width_precision(long num, int width,
 	width -= 2;
 	if (num < 0)
 	{
-		ft_putchar('-');
+		ft_putchar('-', s_struct);
 		num *= -1;
 		width -= 1;
 	}
 	while (precision-- > malloc_count(num))
-		ft_putchar('0');
+		ft_putchar('0', s_struct);
 	ft_putptr(num, s_struct);
 	if (true_precision > malloc_count(num))
 		while (width-- - true_precision > 0)
-			ft_putchar(' ');
+			ft_putchar(' ', s_struct);
 	while (width-- - malloc_count(num) > 0 &&
 	true_precision < malloc_count(num))
-		ft_putchar(' ');
+		ft_putchar(' ', s_struct);
 	s_struct->flag = 'Z';
 }
 

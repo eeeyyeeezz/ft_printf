@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/20 18:43:36 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/24 22:22:02 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/25 17:17:07 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void			mg_uns_width_minus(unsigned int num, int width,
 		ft_putuns(num, s_struct);
 		while (width - ft_strlen_atoi(num))
 		{
-			ft_putchar(' ');
+			ft_putchar(' ', s_struct);
 			width--;
 		}
 		s_struct->flag = 'Z';
@@ -40,7 +40,7 @@ void			mg_uns_zero(unsigned int num, int width, t_arg *s_struct)
 	{
 		while (width - ft_strlen_atoi(num) > 0)
 		{
-			ft_putchar('0');
+			ft_putchar('0', s_struct);
 			width--;
 		}
 		ft_putuns(num, s_struct);
@@ -60,7 +60,7 @@ void			mg_uns_width(unsigned int num, int width, t_arg *s_struct)
 			width += 1;
 		while (width - ft_strlen_atoi(num) && s_struct->flag != '0')
 		{
-			ft_putchar(' ');
+			ft_putchar(' ', s_struct);
 			width--;
 		}
 		ft_putuns(num, s_struct);
@@ -87,7 +87,7 @@ void			mg_uns_precesion(unsigned int num,
 	{
 		while (precision - ft_strlen_atoi(num) > 0)
 		{
-			ft_putchar('0');
+			ft_putchar('0', s_struct);
 			precision--;
 		}
 		ft_putuns(num, s_struct);

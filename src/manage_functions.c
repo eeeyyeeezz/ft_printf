@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/19 16:56:49 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/24 22:19:38 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/25 20:56:21 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,12 @@ void				manage_int(va_list argptr, t_arg *s_struct)
 	precision = s_struct->precision;
 	width = s_struct->width;
 	num = va_arg(argptr, int);
+	if (num == 0 && precision == 0 && s_struct->zero_flag == 1 && width > 0)
+	{
+		while (width-- > 0)
+			ft_putchar(' ', s_struct);
+	return ;
+	}
 	mg_int_width_plus_precision_flags(num, width, precision, s_struct);
 	mg_int_width_plus_precision(num, width, precision, s_struct);
 	mg_int_width_minus(num, width, precision, s_struct);

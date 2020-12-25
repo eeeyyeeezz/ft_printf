@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/19 23:18:35 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/24 22:35:11 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/25 17:05:55 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void			mg_arr_min_flag_width_precision(const char *arr, int width,
 	{
 		while (precision-- > 0 && ft_strlen(arr) > precision && arr[i] != '\0')
 		{
-			s_struct->r_r += ft_putchar(arr[i++]);
+			ft_putchar(arr[i++], s_struct);
 			count++;
 		}
 		if (precision >= ft_strlen(arr))
@@ -35,7 +35,7 @@ void			mg_arr_min_flag_width_precision(const char *arr, int width,
 			count = ft_strlen(arr);
 		}
 		while (width-- - count > 0)
-			ft_putchar(' ');
+			ft_putchar(' ', s_struct);
 		s_struct->flag = 'Z';
 	}
 }
@@ -71,9 +71,9 @@ void			mg_arr_width_plus_precision(const char *arr, int width,
 		if (precision < ft_strlen(arr))
 			width += ft_strlen(arr) - precision;
 		while (width-- - ft_strlen(arr) > 0)
-			s_struct->r_r += ft_putchar(' ');
+			ft_putchar(' ', s_struct);
 		while (precision-- > 0 && ft_strlen(arr) > precision && arr[i] != '\0')
-			s_struct->r_r += ft_putchar(arr[i++]);
+			ft_putchar(arr[i++], s_struct);
 		if (precision >= ft_strlen(arr))
 			ft_putstr(arr, s_struct);
 		s_struct->flag = 'Z';
@@ -88,17 +88,17 @@ void			manage_chr(va_list argptr, t_arg *s_struct)
 	if (s_struct->width > 0 && s_struct->flag == '!')
 	{
 		while (--s_struct->width)
-			s_struct->r_r += ft_putchar(' ');
-		s_struct->r_r += ft_putchar(letter);
+			ft_putchar(' ', s_struct);
+		ft_putchar(letter, s_struct);
 	}
 	else if (s_struct->width > 0 && s_struct->flag == '-')
 	{
-		s_struct->r_r += ft_putchar(letter);
+		ft_putchar(letter, s_struct);
 		while (--s_struct->width)
-			s_struct->r_r += ft_putchar(' ');
+			ft_putchar(' ', s_struct);
 	}
 	else
-		s_struct->r_r += ft_putchar(letter);
+		ft_putchar(letter, s_struct);
 }
 
 void			manage_prc(t_arg *s_struct)
@@ -106,24 +106,24 @@ void			manage_prc(t_arg *s_struct)
 	if (s_struct->width > 0 && s_struct->flag == '!')
 	{
 		while (--s_struct->width)
-			s_struct->r_r += ft_putchar(' ');
-		s_struct->r_r += ft_putchar('%');
+			ft_putchar(' ', s_struct);
+		ft_putchar('%', s_struct);
 		s_struct->flag = 'Z';
 	}
 	if (s_struct->width > 0 && s_struct->flag == '0')
 	{
 		while (--s_struct->width)
-			s_struct->r_r += ft_putchar('0');
-		s_struct->r_r += ft_putchar('%');
+			ft_putchar('0', s_struct);
+		ft_putchar('%', s_struct);
 		s_struct->flag = 'Z';
 	}
 	else if (s_struct->width > 0 && s_struct->flag == '-')
 	{
-		s_struct->r_r += ft_putchar('%');
+		ft_putchar('%', s_struct);
 		while (--s_struct->width)
-			s_struct->r_r += ft_putchar(' ');
+			ft_putchar(' ', s_struct);
 		s_struct->flag = 'Z';
 	}
 	else if (s_struct->flag != 'Z')
-		s_struct->r_r += ft_putchar('%');
+		ft_putchar('%', s_struct);
 }

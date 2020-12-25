@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/19 16:54:07 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/24 22:30:54 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/25 19:06:16 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void		ft_putnbr(int nb, t_arg *s_struct)
 		return ;
 	if (nb < 0 && nb != -2147483648)
 	{
-		s_struct->r_r += write(1, "-", 1);
+		ft_putchar('-', s_struct);
 		nb *= -1;
 	}
 	if (nb == -2147483648)
@@ -44,10 +44,10 @@ void		ft_putnbr(int nb, t_arg *s_struct)
 	else if (nb / 10 > 0)
 	{
 		ft_putnbr(nb / 10, s_struct);
-		s_struct->r_r += ft_putchar(nb % 10 + 48);
+		ft_putchar(nb % 10 + 48, s_struct);
 	}
 	else
-		s_struct->r_r += ft_putchar(nb + 48);
+		ft_putchar(nb + 48, s_struct);
 }
 
 int			ft_strlen(const char *s)
@@ -97,8 +97,8 @@ void		ft_putuns(unsigned int nb, t_arg *s_struct)
 	else if (nb / 10 > 0)
 	{
 		ft_putnbr(nb / 10, s_struct);
-		ft_putchar(nb % 10 + 48);
+		ft_putchar(nb % 10 + 48, s_struct);
 	}
 	else
-		ft_putchar(nb + 48);
+		ft_putchar(nb + 48, s_struct);
 }
