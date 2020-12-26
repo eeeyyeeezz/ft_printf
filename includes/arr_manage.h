@@ -6,12 +6,16 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/19 23:24:37 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/24 21:45:20 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/26 18:27:23 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ARR_MANAGE_H
 # define ARR_MANAGE_H
+
+void			manage_str_put(const char *arr, int width, int precision, t_arg *s_struct);
+void			manage_all_str(const char *arr, int width, int precision, t_arg *s_struct);
+void			manage_null_str(const char *arr, int width, int precision, t_arg *s_struct);
 
 void			mg_arr_min_flag_width_precision(const char *arr, int width,
 				int precision, t_arg *s_struct);

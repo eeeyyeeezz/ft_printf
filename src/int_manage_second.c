@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/19 16:59:44 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/25 20:59:56 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/25 22:05:24 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void			mg_int_zero_flag_width_precision(int num, int width,
 	int true_precision;
 
 	true_precision = precision;
-	if (precision > ft_strlen_atoi(num) && num < 0 && s_struct->flag == '0')
+	if (precision > ft_strlen_minus(num) && num < 0 && s_struct->flag == '0')
 		width -= 1;
 	if (precision > ft_strlen_atoi(num) && s_struct->flag == '0')
 	{
@@ -59,7 +59,7 @@ void			mg_int_min_flag_width_precision(int num, int width,
 		while (width-- - true_precision > 0)
 			ft_putchar(' ', s_struct);
 	while (width-- - ft_strlen_atoi(num) > 0 &&
-	true_precision < ft_strlen_atoi(num))
+	true_precision <= ft_strlen_atoi(num))
 		ft_putchar(' ', s_struct);
 	s_struct->flag = 'Z';
 }
@@ -84,7 +84,7 @@ void			mg_int_width_plus_precision(int num, int width,
 	true_precision = precision;
 	if (width > precision && precision > 0 && s_struct->flag == '!')
 	{
-		if (precision > ft_strlen_atoi(num) && num < 0)
+		if (precision > ft_strlen_minus(num) && num < 0)
 			width -= 1;
 		if (precision > ft_strlen_atoi(num))
 		{

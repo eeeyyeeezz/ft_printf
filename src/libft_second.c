@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/19 16:54:07 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/25 19:06:16 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/25 22:55:28 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void		ft_putnbr(int nb, t_arg *s_struct)
 		nb *= -1;
 	}
 	if (nb == -2147483648)
-		ft_putstr("-2147483648", s_struct);
+		ft_putstr("2147483648", s_struct);
 	else if (nb / 10 > 0)
 	{
 		ft_putnbr(nb / 10, s_struct);

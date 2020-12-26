@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/19 16:56:49 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/25 20:56:21 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/26 19:35:44 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,14 @@ void				manage_str(va_list argptr, t_arg *s_struct)
 
 	precision = s_struct->precision;
 	width = s_struct->width;
+	manage_all_str(arr, width, precision, s_struct);
 	if (!(arr = va_arg(argptr, char*)))
-		arr = "(null)";
-	mg_arr_width_plus_precision_flag(arr, width, precision, s_struct);
-	mg_arr_width_plus_precision(arr, width, precision, s_struct);
-	mg_arr_width_minus(arr, width, precision, s_struct);
-	mg_arr_width(arr, width, s_struct);
-	mg_arr_precesion(arr, precision, s_struct);
+		manage_null_str(arr, width, precision, s_struct);
+	else
+	{
+		manage_all_str(arr, width, precision, s_struct);
+		manage_str_put(arr, width, precision, s_struct);
+	}
 }
 
 void				manage_int(va_list argptr, t_arg *s_struct)
@@ -61,12 +62,14 @@ void				manage_int(va_list argptr, t_arg *s_struct)
 			ft_putchar(' ', s_struct);
 	return ;
 	}
-	mg_int_width_plus_precision_flags(num, width, precision, s_struct);
-	mg_int_width_plus_precision(num, width, precision, s_struct);
-	mg_int_width_minus(num, width, precision, s_struct);
-	mg_int_zero(num, width, s_struct);
-	mg_int_width(num, width, s_struct);
-	mg_int_precesion(num, precision, s_struct);
+	manage_all(num, width, precision, s_struct);
+	manage_int_put(num, width, precision, s_struct);
+	// mg_int_width_plus_precision_flags(num, width, precision, s_struct);
+	// mg_int_width_plus_precision(num, width, precision, s_struct);
+	// mg_int_width_minus(num, width, precision, s_struct);
+	// mg_int_zero(num, width, s_struct);
+	// mg_int_width(num, width, s_struct);
+	// mg_int_precesion(num, precision, s_struct);
 }
 
 void				manage_uns(va_list argptr, t_arg *s_struct)

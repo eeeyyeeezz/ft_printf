@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/19 23:18:35 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/25 17:05:55 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/26 15:40:55 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,10 @@ void			mg_arr_width_plus_precision_flag(const char *arr, int width,
 	(width > 0 && precision == 0 && s_struct->zero_flag == 1 &&
 	s_struct->flag == '-'))
 		mg_arr_min_flag_width_precision(arr, width, precision, s_struct);
-	else if (width == 0 && precision == 0 &&
-			s_struct->zero_flag == 0 && s_struct->flag == '!')
+	else if ((width == 0 && precision == 0 &&
+			s_struct->zero_flag == 0 && s_struct->flag == '!') ||
+			(s_struct->flag == '-' && s_struct->width == 0 && s_struct->precision == 0 && s_struct->zero_flag == 0) ||
+			(s_struct->flag == '-' && s_struct->width == 0 && s_struct->precision == 0 && s_struct->zero_flag == 1))
 	{
 		ft_putstr(arr, s_struct);
 		s_struct->flag = 'Z';

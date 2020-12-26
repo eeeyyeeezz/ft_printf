@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/19 17:03:03 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/25 19:19:03 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/25 22:30:45 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,9 @@ typedef	struct		s_arg
 	int		count;
 	int		width;
 	int		precision;
+	int		null_put;
+	int		w_put;
+	int		f_len;
 	int		zero_flag;
 	int		r_r;
 	char	flag;

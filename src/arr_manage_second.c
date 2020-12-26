@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/19 23:19:01 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/25 17:09:39 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/26 16:17:02 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,8 @@ void				mg_arr_precesion(const char *arr,
 
 	i = 0;
 	width = s_struct->width;
-	if ((precision < ft_strlen(arr) &&
-	width < precision && s_struct->flag == '!') ||
-	(width == precision && s_struct->flag == '!') ||
-	(s_struct->flag == '-' && width == 0))
+	if ((precision < ft_strlen(arr) && width < precision && s_struct->flag == '!') ||
+	(width == precision && s_struct->flag == '!') || (s_struct->flag == '-' && width == 0))
 	{
 		while (precision-- > 0 && arr[i] != '\0')
 			ft_putchar(arr[i++], s_struct);
@@ -68,8 +66,5 @@ void				mg_arr_precesion(const char *arr,
 	}
 	else if ((precision >= ft_strlen(arr) ||
 	precision < ft_strlen(arr)) && s_struct->flag != 'Z')
-	{
 		ft_putstr(arr, s_struct);
-		s_struct->flag = 'Z';
-	}
 }

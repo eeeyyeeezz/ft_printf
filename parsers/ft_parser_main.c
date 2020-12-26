@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/19 16:38:41 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/25 20:10:40 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/25 23:05:40 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ void				ft_parser(const char *arr, t_arg *s_struct, va_list argptr)
 	s_struct->precision = 0;
 	s_struct->count = 0;
 	s_struct->width = 0;
+	s_struct->null_put = 0;
+	s_struct->f_len = 0;
 	s_struct->flag = '!';
 	ft_parser_type(arr, s_struct);
 	ft_parser_width(arr, s_struct, argptr);
