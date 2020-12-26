@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/19 16:52:25 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/26 22:39:19 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/26 18:40:15 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void			ft_putchar(char c, t_arg *s_struct)
 	s_struct->r_r++;
 }
 
-void			ft_putstr(const char *s, t_arg *s_struct)
+void		ft_putstr(const char *s, t_arg *s_struct)
 {
 	if (s == NULL)
 		return ;
@@ -26,7 +26,7 @@ void			ft_putstr(const char *s, t_arg *s_struct)
 		s_struct->r_r += write(1, &*s++, 1);
 }
 
-int				ft_isdigit(int c)
+int			ft_isdigit(int c)
 {
 	if (c >= '0' && c <= '9')
 		return (1);
@@ -34,7 +34,7 @@ int				ft_isdigit(int c)
 		return (0);
 }
 
-int				ft_istype(int c)
+int			ft_istype(int c)
 {
 	if ((c >= 'a' && c <= 'z') || c == 'X')
 		return (1);
@@ -42,7 +42,7 @@ int				ft_istype(int c)
 		return (0);
 }
 
-int				ft_strlen_minus(int n)
+int			ft_strlen_minus(int n)
 {
 	int len;
 
