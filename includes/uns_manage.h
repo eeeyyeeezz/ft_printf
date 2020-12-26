@@ -6,12 +6,16 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/20 18:41:24 by gmorra            #+#    #+#             */
-/*   Updated: 2020/12/24 22:38:58 by gmorra           ###   ########.fr       */
+/*   Updated: 2020/12/26 19:44:39 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef UNS_MANAGE_H
 # define UNS_MANAGE_H
+
+
+
+
 
 void			mg_uns_width_minus(unsigned int num, int width,
 				int precision, t_arg *s_struct);
