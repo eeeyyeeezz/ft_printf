@@ -6,17 +6,18 @@
 #    By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/12/02 14:56:57 by gmorra            #+#    #+#              #
-#    Updated: 2020/12/26 22:48:20 by gmorra           ###   ########.fr        #
+#    Updated: 2020/12/27 16:43:48 by gmorra           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libftprintf.a
 
-FLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror
 
-HEADER = includes/libftprintf.h
-
-OPTION = -c -I $(HEADER)
+HEADERS = includes/ft_libft.h\
+		includes/ft_manage.h\
+		includes/ft_parser.h\
+		includes/libftprintf.h\
 
 CC = gcc
 
@@ -31,17 +32,12 @@ SRC = ft_printf.c\
 	src/manage_functions.c\
 	src/malloc_count.c\
 
-COMPILE = gcc -g ft_printf.c main.c src/*.c parsers/*.c && ./a.out
-
 OBJ = $(SRC:.c=.o)
 
 all: $(NAME)
 
-$(NAME): ${OBJ}
-	ar rc $(NAME) $(OBJ)
-
-COMPILE:
-	${COMPILE}
+$(NAME): ${OBJ} ${HEADERS}
+	ar rc ${NAME} ${OBJ} ${HEADERS}
 
 clean:
 	rm -f $(OBJ)
